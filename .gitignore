@@ -1,5 +1,5 @@
-!node_modules/@viro-community/
-node_modules/
+node_modules/**
+!node_modules/@viro-community/**
 dist/
 firebase.js
 npm-debug.*
@@ -51,9 +51,6 @@ local.properties
 *.hprof
 
 # node.js
-#
-node_modules/
-npm-debug.log
 yarn-error.log
 
 # BUCK
@@ -70,8 +67,6 @@ buck-out/
 
 # Expo
 .expo/
-web-build/
-dist/
 .expo-shared/
 
 # @end expo-cli
