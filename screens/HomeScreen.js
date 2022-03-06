@@ -19,17 +19,30 @@ const HomeScreen = () => {
       .catch(error => alert(error.message))
   }
 
+  const goToDemoScreen = () => {
+    navigation.replace("ViroReactTest");
+  }
+
   const tileDimensions = calcTileDimensions(width, 2.01) 
   
   return (
     <View style={styles.container}>
       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+      
+      <TouchableOpacity
+        onPress={goToDemoScreen}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>AR Demo</Text>
+      </TouchableOpacity>
+      
       <TouchableOpacity
         onPress={handleSignOut}
         style={[styles.button, styles.buttonOutline]}
       >
         <Text style={styles.buttonOutlineText}>Sign out</Text>
       </TouchableOpacity>
+
     </View>
   );
 }
@@ -51,7 +64,7 @@ const Item = ({ size, margin, imageObj }) => (
       key={imageObj.id}>
       <Image 
         source={imageObj.image}
-        style={{ width: 150, height: 150, position: "absolute", opacity:0.4, backgroundColor:"white" }}
+        style={{ width: 50, height: 50, position: "absolute", opacity:0.4, backgroundColor:"white" }}
       ></Image>
       <Text style={styles.imageTitle}> {imageObj.title}</Text>
     </View>
