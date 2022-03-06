@@ -1,4 +1,4 @@
-!node_modules/@viro-community
+!node_modules/@viro-community/
 node_modules/
 dist/
 firebase.js
