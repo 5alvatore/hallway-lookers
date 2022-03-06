@@ -1,6 +1,4 @@
-**/node_modules/*
-!**/node_modules/@viro-community
-dist/
+node_modules/
 firebase.js
 npm-debug.*
 *.jks
