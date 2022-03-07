@@ -2,13 +2,14 @@
 import * as firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "api-key",
-  authDomain: "auth-domain",
-  projectId: "project-id",
-  storageBucket: "storage-bucket",
-  messagingSenderId: "1234567890",
-  appId: "1:1234457836705:web:630d3223432"
+  apiKey: "AIzaSyDWppM_av43eut1Nvo0uRYErRMQL3xsJg4",
+  authDomain: "fir-auth-980e6.firebaseapp.com",
+  projectId: "fir-auth-980e6",
+  storageBucket: "fir-auth-980e6.appspot.com",
+  messagingSenderId: "353077836705",
+  appId: "1:353077836705:web:630d267040b4959b87a9e0"
 };
+
 
 // Initialize Firebase
 let app = firebase.initializeApp(firebaseConfig);
