@@ -64,7 +64,7 @@ const Item = ({ size, margin, imageObj }) => (
       key={imageObj.id}>
       <Image 
         source={imageObj.image}
-        style={{ width: 50, height: 50, position: "absolute", opacity:0.4, backgroundColor:"white" }}
+        style={{ width: 150, height: 150, position: "absolute", opacity:0.4, backgroundColor:"white" }}
       ></Image>
       <Text style={styles.imageTitle}> {imageObj.title}</Text>
     </View>
