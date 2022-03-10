@@ -2,27 +2,28 @@
 
 An informative AR-based game.
 
-## Installation
+## Setting up dev environment
 
-Install the dependencies
+1. Install the dependencies
 
 ```bash
 npm install
 ```
 
-## Usage using Expo
+2. Replace the @viro-community npm package with the unofficial one
 
-1. Install Expo application on your mobile.
+You should be able to find it in the group chat.
 
-2. This will start a development server for you.
+3. Run the build and debug
 
 ```bash
-npm start
+expo run:android
 ```
 
-3. Scan the generated QR code using your Expo application.
+Voila! Setup complete
 
-4. Voila!
+## Note
+The AR demo is in place now. You'll have access to it once you successfully login.
 
 ## Contribution
 The master branch should be kept clean. All changes should be done in a separate branch and should be merged once it has been signed off by QA.
