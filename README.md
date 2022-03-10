@@ -17,7 +17,7 @@ You should be able to find it in the group chat.
 3. Run the build and debug
 
 ```bash
-expo start:android
+expo run:android
 ```
 
 Voila! Setup complete
