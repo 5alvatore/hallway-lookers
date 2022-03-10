@@ -4,9 +4,17 @@ import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpac
 import { auth } from '../firebase'
 
 const RegisterScreen = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
+  // const [email, setEmail] = useState('')
+  // const [password, setPassword] = useState('')
+  const [registerForm, setRegisterForm] = useState(
+    {
+      firstName : "",
+      lastName : "",
+      email: "",
+      password: "",
+      confirmPassword : ""
+    }
+  )
   const navigation = useNavigation()
 
   useEffect(() => {
@@ -37,8 +45,38 @@ const RegisterScreen = () => {
     );
 
   const handleSignUp = () => {
+    const isEmptyFields = Object.values(registerForm).some(val => val == "" );
+    if(isEmptyFields) {
+      Alert.alert(
+        "Registration Error",
+        "All fields are Required",
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+        ]
+      );
+      return;
+    } 
+    const passwordMisMatch = registerForm.password !== registerForm.confirmPassword;
+    if(passwordMisMatch) {
+      Alert.alert(
+        "Registration Error",
+        "Passoword and confirm password do not match",
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+        ]
+      );
+      return;
+    }
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(registerForm.email, registerForm.password)
       .then(userCredentials => {
         const user = userCredentials.user;
 
@@ -47,23 +85,46 @@ const RegisterScreen = () => {
       .catch(error => alert(error.message))
   }
 
+   const handleChange = (name,value) => {
+    setRegisterForm({ ...registerForm, [name]: value });
+  };
+
   return (
     <KeyboardAvoidingView
       style={styles.container}
       behavior="padding"
     >
       <View style={styles.inputContainer}>
+      <TextInput
+          placeholder="First Name"
+          value={registerForm.firstName}
+          onChangeText={value => handleChange('firstName',value)}
+          style={styles.input}
+        />
+      <TextInput
+          placeholder="Last Name"
+          value={registerForm.lastName}
+          onChangeText={value => handleChange('lastName', value)}
+          style={styles.input}
+        />
         <TextInput
           placeholder="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
+          value={registerForm.email}
+          onChangeText={value => handleChange('email',value)}
           style={styles.input}
         />
 
         <TextInput
           placeholder="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
+          value={registerForm.password}
+          onChangeText={value => handleChange('password',value)}
+          style={styles.input}
+          secureTextEntry
+        />
+        <TextInput
+          placeholder="Confirm password"
+          value={registerForm.confirmPassword}
+          onChangeText={text => handleChange('confirmPassword', text)}
           style={styles.input}
           secureTextEntry
         />
