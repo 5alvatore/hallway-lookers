@@ -1,6 +1,6 @@
 import React from 'react'
 import { auth, database } from '../firebase';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, Image } from 'react-native';
+import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
 
 var user = null;
 var unlocked_buildings = []
@@ -77,6 +77,7 @@ export default class PathwayScreen extends React.Component {
           }
           console.log(unlocked_buildings)
           this.setState({ unlocked_buildings: unlocked_buildings })
+
         } else {
           console.log("No data available");
         }

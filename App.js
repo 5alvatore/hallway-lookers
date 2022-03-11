@@ -8,13 +8,6 @@ import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 
 import { createDrawerNavigator } from '@react-navigation/drawer';
-// import {
-//   ProfileScreen,
-//   PathwayScreen,
-//   RankingScreen,
-//   SignOutScreen
-
-// } from "./screens";
 
 import ProfileScreen from './screens/ProfileScreen';
 import PathwayScreen from './screens/PathwayScreen';
