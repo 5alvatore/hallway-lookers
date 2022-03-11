@@ -66,7 +66,7 @@ export default function App() {
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Hallway Lookers" component={DrawerRoutes} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Home" component={HomeScreen} /> */}
+        <Stack.Screen name="Home" component={HomeScreen} /> 
         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
       </Stack.Navigator>
