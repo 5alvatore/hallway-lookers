@@ -55,27 +55,36 @@ export default class PathwayScreen extends React.Component {
   componentDidMount() {
     user = auth.currentUser;
     const reference = database.ref();
-    reference.child("users").child(user.uid).get().then((snapshot) => {
-      if (snapshot.exists()) {
-        unlocked_buildings = []
-        for (let i = 0; i < snapshot.val().unlocked_buildings.length; i++) {
-          let title_string_array = ((snapshot.val().unlocked_buildings[i]).split("_"))
-          title_string_array.pop()
-          let title = title_string_array.join(" ")
-          unlocked_buildings.push({ id: i + 1, title: title, image: snapshot.val().unlocked_buildings[i] })
-        }
-        for (let i = unlocked_buildings.length; i < 4; i++) {
-          unlocked_buildings.push({ id: i + 1, title: 'Locked Level', image: 'locked_level' })
-        }
-        console.log(unlocked_buildings)
-        this.setState({ unlocked_buildings: unlocked_buildings })
-      } else {
-        console.log("No data available");
-      }
+    if (user) {
+      reference.child("users").child(user.uid).get().then((snapshot) => {
+        if (snapshot.exists()) {
+          unlocked_buildings = []
+          if (snapshot.val().unlocked_buildings != undefined &&
+            snapshot.val().unlocked_buildings.length > 0) {
+            for (let i = 0; i < snapshot.val().unlocked_buildings.length; i++) {
+              let title_string_array = ((snapshot.val().unlocked_buildings[i]).split("_"))
+              title_string_array.pop()
+              let title = title_string_array.join(" ")
+              unlocked_buildings.push({ id: i + 1, title: title, image: snapshot.val().unlocked_buildings[i] })
+            }
+          }
+          else {
+            unlocked_buildings = []
+          }
 
-    }).catch((error) => {
-      console.error(error);
-    });
+          for (let i = unlocked_buildings.length; i < 4; i++) {
+            unlocked_buildings.push({ id: i + 1, title: 'Locked Level', image: 'locked_level' })
+          }
+          console.log(unlocked_buildings)
+          this.setState({ unlocked_buildings: unlocked_buildings })
+        } else {
+          console.log("No data available");
+        }
+
+      }).catch((error) => {
+        console.error(error);
+      });
+    }
   }
 
   render() {
