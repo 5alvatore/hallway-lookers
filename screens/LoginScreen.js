@@ -13,7 +13,7 @@ const LoginScreen = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("Home")
+        navigation.replace("Hallway Lookers")
       }
     })
 
@@ -86,13 +86,13 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   input: {
-    borderColor: '#9B2226',
+    borderColor: '#ca6702',
     backgroundColor: 'white',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderWidth: 1,
+    borderWidth: 3,
     borderRadius: 10,
-    marginTop: 5,
+    marginTop: 10,
   },
   buttonContainer: {
     width: '60%',
@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#9B2226',
+    backgroundColor: '#941b0c',
     width: '100%',
     padding: 15,
     borderRadius: 10,
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   hyperlink: {
-    color: '#9B2226',
+    color: '#941b0c',
     fontWeight: '700',
   },
 })

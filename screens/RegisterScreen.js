@@ -13,11 +13,11 @@ const RegisterScreen = () => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
         auth.signOut()
-            .then(() => {
-                navigation.replace("Register");
-                createTwoButtonAlert();
-            })
-            .catch(error => alert(error.message))
+          .then(() => {
+            navigation.replace("Register");
+            createTwoButtonAlert();
+          })
+          .catch(error => alert(error.message))
       }
     })
 
@@ -76,7 +76,7 @@ const RegisterScreen = () => {
         >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
-      
+
       </View>
     </KeyboardAvoidingView>
   )
@@ -91,16 +91,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   inputContainer: {
-    width: '80%'
+    width: '80%',
+    // marginBottom: 20
   },
   input: {
+    borderColor: '#ca6702',
     backgroundColor: 'white',
-    borderColor: '#9B2226',
     paddingHorizontal: 15,
     paddingVertical: 10,
+    borderWidth: 3,
     borderRadius: 10,
-    borderWidth: 1,
-    marginTop: 5,
+    marginTop: 10,
   },
   buttonContainer: {
     width: '60%',
@@ -115,7 +116,7 @@ const styles = StyleSheet.create({
     marginTop: 40,
   },
   button: {
-    backgroundColor: '#9B2226',
+    backgroundColor: '#941b0c',
     width: '100%',
     padding: 15,
     borderRadius: 10,

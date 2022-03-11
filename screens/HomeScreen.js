@@ -29,6 +29,20 @@ const HomeScreen = () => {
 
   const tileDimensions = calcTileDimensions(width, 2.01) 
   
+  function HomePage() {
+    return (
+      <View style={styles.container}>
+      {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+      <TouchableOpacity
+        onPress={handleSignOut}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Sign out</Text>
+      </TouchableOpacity>
+    </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
@@ -75,7 +89,7 @@ const Item = ({ size, margin, imageObj }) => (
       key={imageObj.id}>
       <Image 
         source={imageObj.image}
-        style={{ width: 150, height: 150, position: "absolute", opacity:0.4, backgroundColor:"white" }}
+        style={{ width: 150, height: 150, position: "absolute", opacity:0.3, backgroundColor:"white" }}
       ></Image>
       <Text style={styles.imageTitle}> {imageObj.title}</Text>
     </View>
@@ -120,20 +134,20 @@ const styles = StyleSheet.create({
     paddingTop: 20,
     marginBottom: 80,
     borderWidth: 2,
-    borderColor: '#9B2226',
-    borderRadius:5
+    borderColor: '#eddcd2',
+    borderRadius:4
   },
   itemText: {
     fontSize: 20
   },
   imageTitle: {
-    color: '#9B2226', 
+    color: 'white', 
     fontWeight: "bold", 
     marginTop:-20,
     fontSize:16,
   },
   button: {
-    backgroundColor: '#9B2226',
+    backgroundColor: '#941b0c',
     width: '30%',
     marginHorizontal: 130,
     justifyContent: 'center',
@@ -143,7 +157,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonOutline: {
-    backgroundColor: 'white',
+    backgroundColor: '#941b0c',
     marginTop: 5,
     borderColor: '#9B2226',
     borderWidth: 2,
@@ -154,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: '#9B2226',
+    color: 'white',
     fontWeight: '700',
     fontSize: 16,
   },
