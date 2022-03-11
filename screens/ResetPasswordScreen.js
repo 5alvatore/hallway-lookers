@@ -1,36 +1,34 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
-import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { auth } from '../firebase'
 
-const LoginScreen = () => {
+const ResetPasswordScreen = () => {
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-
   const navigation = useNavigation()
 
-  
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) {
-        navigation.replace("Home")
+        navigation.replace("Login")
       }
     })
 
     return unsubscribe
   }, [])
 
-  const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        const user = userCredentials.user;
-        console.log('Logged in with:', user.email);
-      })
-      .catch(error => alert(error.message))
-  }
 
-  return (
+  const resetPassword = (email) => {
+    auth
+    .sendPasswordResetEmail(email.toString())
+      .then(user => {
+        console.log(user);
+        alert('Please check your email...')
+      }).catch(error => alert(error.message))
+      }
+    
+
+return (
     
     <KeyboardAvoidingView
       style={styles.container}
@@ -44,35 +42,15 @@ const LoginScreen = () => {
           onChangeText={text => setEmail(text)}
           style={styles.input}
         />
-
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
-          style={styles.input}
-          secureTextEntry
-        />
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={handleLogin}
+          onPress={resetPassword(email)}
           style={styles.button}
         >
         
-          <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.hyperlinkContainer}>
-        <TouchableOpacity onPress = {() => navigation.navigate('Register')}>
-          <Text style={styles.hyperlink}>Not a member yet? Register here</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={styles.hyperlinkContainer}>
-        <TouchableOpacity onPress = {() => navigation.navigate('ResetPassword')}>
-          <Text style={styles.hyperlink}>Forgot Password?</Text>
+          <Text style={styles.buttonText}>Reset</Text>
         </TouchableOpacity>
       </View>
 
@@ -80,7 +58,7 @@ const LoginScreen = () => {
   )
 }
 
-export default LoginScreen
+export default ResetPasswordScreen
 
 const styles = StyleSheet.create({
   container: {
@@ -92,13 +70,19 @@ const styles = StyleSheet.create({
     width: '80%'
   },
   input: {
-    borderColor: '#9B2226',
     backgroundColor: 'white',
+    borderColor: '#9B2226',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    borderWidth: 1,
     borderRadius: 10,
+    borderWidth: 1,
     marginTop: 5,
+  },
+  buttonContainer: {
+    width: '60%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 40,
   },
   buttonContainer: {
     width: '60%',
@@ -128,12 +112,5 @@ const styles = StyleSheet.create({
     color: '#9B2226',
     fontWeight: '700',
     fontSize: 16,
-  },
-  hyperlinkContainer: {
-    marginTop: 40,
-  },
-  hyperlink: {
-    color: '#9B2226',
-    fontWeight: '700',
   },
 })
