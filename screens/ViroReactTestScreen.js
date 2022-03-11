@@ -18,6 +18,16 @@ import {
 
 const InitialScene = (props) => {
   let data = props.sceneNavigator.viroAppProps;
+  //let newImage=require("../assets/door.jpeg");
+  //const [egghatched,setEgghatched] = useState(0);
+  
+  const [imageAsset, setImageAsset] = useState(require('../assets/easter-egg/12172_Egg_v1_l2.obj'))
+  console.log(imageAsset);
+
+  // const handleImageChange = () => {
+  //   setImageAsset(newImage)
+  // }
+
 
   ViroAnimations.registerAnimations({
     rotate: {
@@ -38,9 +48,23 @@ const InitialScene = (props) => {
     }
   })
 
-  // Adding log once image is detected
+  // Adding log and changing conditions once image is detected
   const anchorFound = () => {
     console.log("Anchor / Image detected")
+  }
+
+  const checkEggHatched = () => {
+    if (egghatched == 0){
+      setEgghatched(1);
+      console.log("Clicked, egg hatched")
+      console.log("Show the status: ",egghatched);
+      
+    }
+    
+    // else{
+    //   console.log("egg is already hatched")
+    // }
+
   }
 
   return (
@@ -61,11 +85,18 @@ const InitialScene = (props) => {
       <ViroAmbientLight color="#ffffff" />
         <ViroAmbientLight color="#ffffff" />
         <Viro3DObject
-          source={require('../assets/easter-egg/12172_Egg_v1_l2.obj')}
+          source={imageAsset}
           position={[0, -3, 0]}
           scale={[0.008, 0.008, 0.008]}
           rotation={[180, 0, 0]}
-          type="OBJ" />
+          type="OBJ"
+          onClick={() => {
+            console.log("Hatched");
+            alert("EGG hatched");
+            //setImageAsset(require("../assets/door.jpeg"))
+            setImageAsset(require('../assets/Egg_hatch/egg_hatched.obj'))
+           }} >
+        </Viro3DObject>
       </ViroARImageMarker>
     </ViroARScene>
   )
