@@ -68,10 +68,10 @@ export default function App() {
 
       {!running && !endGame ?
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontWeight: 'bold', color: 'white', justifyContent: 'center', alignItems: 'center',fontSize: 40 }}>
+          <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center',fontSize: 40 }}>
               Flappy Birds
           </Text>
-          <Text style={{ fontWeight: 'bold', color: 'white', justifyContent: 'center', alignItems: 'center',fontSize: 40 }}>
+          <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center',fontSize: 40 }}>
               Reach 5 points to Win
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
