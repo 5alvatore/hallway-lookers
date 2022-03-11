@@ -23,6 +23,10 @@ const HomeScreen = () => {
     navigation.replace("ViroReactTest");
   }
 
+  const goToMiniGameScreen = () => {
+    navigation.replace("MiniGameOne");
+  }
+
   const tileDimensions = calcTileDimensions(width, 2.01) 
   
   return (
@@ -34,6 +38,13 @@ const HomeScreen = () => {
         style={[styles.button, styles.buttonOutline]}
       >
         <Text style={styles.buttonOutlineText}>AR Demo</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={goToMiniGameScreen}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Mini Game</Text>
       </TouchableOpacity>
       
       <TouchableOpacity
