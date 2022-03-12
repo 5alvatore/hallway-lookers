@@ -18,9 +18,9 @@ const ResetPasswordScreen = () => {
   }, [])
 
 
-  const resetPassword = (email) => {
+  const resetPassword = () => {
     auth
-    .sendPasswordResetEmail(email.toString())
+    .sendPasswordResetEmail(email)
       .then(user => {
         console.log(user);
         alert('Please check your email...')
@@ -46,7 +46,7 @@ return (
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={resetPassword(email)}
+          onPress={resetPassword}
           style={styles.button}
         >
         
