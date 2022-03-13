@@ -22,9 +22,18 @@ const HomeScreen = () => {
   }
 
   const tileDimensions = calcTileDimensions(width, 2.01)
+  const goToDemoScreen = () => {
+    navigation.replace("ViroReactTest");
+  }
 
-  return (
-    <View style={styles.container}>
+  const goToMiniGameScreen = () => {
+    navigation.replace("MiniGameOne");
+  }
+
+  
+  function HomePage() {
+    return (
+      <View style={styles.container}>
       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
       <TouchableOpacity
         onPress={handleSignOut}
@@ -32,6 +41,35 @@ const HomeScreen = () => {
       >
         <Text style={styles.buttonOutlineText}>Sign out</Text>
       </TouchableOpacity>
+    </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+      
+      <TouchableOpacity
+        onPress={goToDemoScreen}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>AR Demo</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={goToMiniGameScreen}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Mini Game</Text>
+      </TouchableOpacity>
+      
+      <TouchableOpacity
+        onPress={handleSignOut}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Sign out</Text>
+      </TouchableOpacity>
+
     </View>
   );
 }

@@ -16,6 +16,9 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      "@viro-community/react-viro"
+    ],
     "ios": {
       "supportsTablet": true
     },
@@ -25,7 +28,7 @@
         "backgroundColor": "#FFFFFF"
       },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.hallway.project"
+      "package": "com.testrandom.project"
     },
     "web": {
       "favicon": "./assets/favicon.png"
