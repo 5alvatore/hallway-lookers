@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { auth } from '../firebase'
+import { auth, database } from '../firebase';
 
 const RegisterScreen = () => {
   const [email, setEmail] = useState('')
@@ -41,8 +41,29 @@ const RegisterScreen = () => {
       .createUserWithEmailAndPassword(email, password)
       .then(userCredentials => {
         const user = userCredentials.user;
-
         console.log('Signed up with:', user.email);
+        const reference = database.ref();
+        console.log("user : ", auth.currentUser.uid);
+        database.ref('users/' + auth.currentUser.uid).set({
+            email: email,
+            unlocked_buildings: ["Lambton_Tower_uow"]
+          });
+
+        // reference.child("users").get().then((snapshot) => {
+        //   if (snapshot.exists()) {
+        //     console.log(snapshot.val(), snapshot.val().length);
+
+        //     database.ref('users/' + snapshot.val().length).set({
+        //       email: email,
+        //       unlocked_buildings: ["lambton_tower_uow"]
+        //     });
+        //   } else {
+        //     console.log("No data available");
+        //   }
+
+        // }).catch((error) => {
+        //   console.error(error);
+        // });
       })
       .catch(error => alert(error.message))
   }

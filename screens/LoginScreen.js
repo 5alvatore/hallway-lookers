@@ -1,14 +1,13 @@
 import { useNavigation } from '@react-navigation/core'
 import React, { useEffect, useState } from 'react'
 import { KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import { auth } from '../firebase'
+import { auth, database } from '../firebase';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const navigation = useNavigation()
-
   
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -26,6 +25,8 @@ const LoginScreen = () => {
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Logged in with:', user.email);
+        const reference = database.ref();
+        console.log("db reference : ", reference)
       })
       .catch(error => alert(error.message))
   }

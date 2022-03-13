@@ -2,12 +2,14 @@ import { useNavigation } from '@react-navigation/core';
 import React from 'react'
 import { auth } from '../firebase';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, Image } from 'react-native';
-import image1 from "../assets/lambton_tower.jpg";
-import image2 from "../assets/essex_hall.jpg";
+import image1 from "../assets/Lambton_Tower_uow.jpg";
+import image2 from "../assets/Essex_Hall_uow.jpg";
 import image3 from "../assets/locked.png";
 import image4 from "../assets/locked2.jpg";
+import {database } from '../firebase';
 
 const HomeScreen = () => {
+  
   const navigation = useNavigation()
 
   const handleSignOut = () => {
@@ -19,6 +21,7 @@ const HomeScreen = () => {
       .catch(error => alert(error.message))
   }
 
+  const tileDimensions = calcTileDimensions(width, 2.01)
   const goToDemoScreen = () => {
     navigation.replace("ViroReactTest");
   }
@@ -27,7 +30,6 @@ const HomeScreen = () => {
     navigation.replace("MiniGameOne");
   }
 
-  const tileDimensions = calcTileDimensions(width, 2.01) 
   
   function HomePage() {
     return (
@@ -75,30 +77,30 @@ const HomeScreen = () => {
 const { width } = Dimensions.get("window");
 
 var data = [
-    { id: 1, title: "Lambton Tower", image: image1 },
-    { id: 2, title: "Essex Hall", image: image2 },
-    { id: 3, title: "Locked Level", image: image3 },
-    { id: 4, title: "Locked Level", image: image4 },
+  { id: 1, title: "Lambton Tower", image: image1 },
+  { id: 2, title: "Essex Hall", image: image2 },
+  { id: 3, title: "Locked Level", image: image3 },
+  { id: 4, title: "Locked Level", image: image4 },
 ]
 
 const Item = ({ size, margin, imageObj }) => (
   imageObj.title != 'Locked Level'
     ?
-    <View 
-      style={[styles.item, { width: size, height: size, marginHorizontal: margin }]} 
+    <View
+      style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
       key={imageObj.id}>
-      <Image 
+      <Image
         source={imageObj.image}
-        style={{ width: 150, height: 150, position: "absolute", opacity:0.3, backgroundColor:"white" }}
+        style={{ width: 150, height: 150, position: "absolute", opacity: 0.3, backgroundColor: "white" }}
       ></Image>
       <Text style={styles.imageTitle}> {imageObj.title}</Text>
     </View>
-    : 
-    <View 
-      style={[styles.item, { width: size, height: size, marginHorizontal: margin }]} 
+    :
+    <View
+      style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
       key={imageObj.id}>
       <Image source={imageObj.image}
-          style={{ width: 130, height: 130, position: "absolute" }}
+        style={{ width: 130, height: 130, position: "absolute" }}
       ></Image>
       <Text></Text>
     </View>
@@ -114,9 +116,9 @@ export default HomeScreen
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: "flex-start", 
-    flexDirection: "row", 
-    flexWrap: "wrap", 
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginTop: 60,
     overflow: 'scroll',
   },
@@ -135,16 +137,16 @@ const styles = StyleSheet.create({
     marginBottom: 80,
     borderWidth: 2,
     borderColor: '#eddcd2',
-    borderRadius:4
+    borderRadius: 4
   },
   itemText: {
     fontSize: 20
   },
   imageTitle: {
-    color: 'white', 
-    fontWeight: "bold", 
-    marginTop:-20,
-    fontSize:16,
+    color: 'white',
+    fontWeight: "bold",
+    marginTop: -20,
+    fontSize: 16,
   },
   button: {
     backgroundColor: '#941b0c',
