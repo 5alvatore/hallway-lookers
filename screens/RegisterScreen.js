@@ -77,9 +77,11 @@ const RegisterScreen = () => {
     }
     auth
       .createUserWithEmailAndPassword(registerForm.email, registerForm.password)
-      .then(userCredentials => {
+      .then(async(userCredentials) => {
         const user = userCredentials.user;
-
+        await user.updateProfile({
+          displayName: `${registerForm.firstName} ${registerForm.lastName}`
+        })
         console.log('Signed up with:', user.email);
       })
       .catch(error => alert(error.message))
