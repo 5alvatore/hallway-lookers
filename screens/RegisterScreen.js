@@ -83,6 +83,14 @@ const RegisterScreen = () => {
           displayName: `${registerForm.firstName} ${registerForm.lastName}`
         })
         console.log('Signed up with:', user.email);
+        setRegisterForm( {
+            firstName : "",
+            lastName : "",
+            email: "",
+            password: "",
+            confirmPassword : ""
+        });
+        
       })
       .catch(error => alert(error.message))
   }
