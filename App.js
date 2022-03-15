@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import HomeScreen from './screens/HomeScreen';
 import ViroReactTestScreen from './screens/ViroReactTestScreen';
 import MiniGameOneScreen from './screens/MiniGameOneScreen';
@@ -57,9 +58,10 @@ export default function App() {
           headerTintColor: "#dee2e6"
         }}>
         <Stack.Screen name="Login" component={LoginScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
         <Stack.Screen name="Register" component={RegisterScreen} />
         <Stack.Screen name="Hallway Lookers" component={DrawerRoutes} options={{ headerShown: false }} />
-        <Stack.Screen name="Home" component={HomeScreen} /> 
+        <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
       </Stack.Navigator>
