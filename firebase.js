@@ -2,16 +2,18 @@
 import * as firebase from "firebase";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDWppM_av43eut1Nvo0uRYErRMQL3xsJg4",
-  authDomain: "fir-auth-980e6.firebaseapp.com",
-  projectId: "fir-auth-980e6",
-  storageBucket: "fir-auth-980e6.appspot.com",
-  messagingSenderId: "353077836705",
-  appId: "1:353077836705:web:630d267040b4959b87a9e0"
+  apiKey: "AIzaSyCyMEqZkkBudDfFPhL5lfliS-tUPQLYRsw",
+  authDomain: "hallwaylookers123.firebaseapp.com",
+  projectId: "hallwaylookers123",
+  storageBucket: "hallwaylookers123.appspot.com",
+  messagingSenderId: "814075161276",
+  appId: "1:814075161276:web:1080396cc995c9ff6b7eb9"
 };
+
 
 // Initialize Firebase
 let app = firebase.initializeApp(firebaseConfig);
 
 const auth = firebase.auth()
-export {auth};
+const database = firebase.database()
+export { auth, database };
