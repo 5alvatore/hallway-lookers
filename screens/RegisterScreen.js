@@ -86,7 +86,7 @@ const RegisterScreen = () => {
         database.ref('users/' + auth.currentUser.uid).set({
             firstName : registerForm.firstName,
             lastName : registerForm.lastName,
-            email: email,
+            email: registerForm.email,
             unlocked_buildings: ["Lambton_Tower_uow"]
           });
           setRegisterForm( {
