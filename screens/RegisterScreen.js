@@ -78,28 +78,24 @@ const RegisterScreen = () => {
     auth
       .createUserWithEmailAndPassword(registerForm.email, registerForm.password)
       .then(async(userCredentials) => {
-        const user = userCredentials.user;
-<<<<<<< HEAD
-        await user.updateProfile({
-          displayName: `${registerForm.firstName} ${registerForm.lastName}`
-        })
+        
+        
         console.log('Signed up with:', user.email);
-        setRegisterForm( {
+        const reference = database.ref();
+        console.log("user : ", auth.currentUser.uid);
+        database.ref('users/' + auth.currentUser.uid).set({
+            firstName : registerForm.firstName,
+            lastName : registerForm.lastName,
+            email: email,
+            unlocked_buildings: ["Lambton_Tower_uow"]
+          });
+          setRegisterForm( {
             firstName : "",
             lastName : "",
             email: "",
             password: "",
             confirmPassword : ""
         });
-        
-=======
-        console.log('Signed up with:', user.email);
-        const reference = database.ref();
-        console.log("user : ", auth.currentUser.uid);
-        database.ref('users/' + auth.currentUser.uid).set({
-            email: email,
-            unlocked_buildings: ["Lambton_Tower_uow"]
-          });
 
         // reference.child("users").get().then((snapshot) => {
         //   if (snapshot.exists()) {
@@ -116,7 +112,6 @@ const RegisterScreen = () => {
         // }).catch((error) => {
         //   console.error(error);
         // });
->>>>>>> cd549326705fcae41e669bea737b3bd603c6581d
       })
       .catch(error => alert(error.message))
   }
