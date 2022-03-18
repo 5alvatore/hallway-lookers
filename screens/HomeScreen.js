@@ -6,10 +6,10 @@ import image1 from "../assets/Lambton_Tower_uow.jpg";
 import image2 from "../assets/Essex_Hall_uow.jpg";
 import image3 from "../assets/locked.png";
 import image4 from "../assets/locked2.jpg";
-import {database } from '../firebase';
+import { database } from '../firebase';
 
 const HomeScreen = () => {
-  
+
   const navigation = useNavigation()
 
   const handleSignOut = () => {
@@ -30,25 +30,25 @@ const HomeScreen = () => {
     navigation.replace("MiniGameOne");
   }
 
-  
+
   function HomePage() {
     return (
       <View style={styles.container}>
-      {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
-      <TouchableOpacity
-        onPress={handleSignOut}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
+        {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+        <TouchableOpacity
+          onPress={handleSignOut}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Sign out</Text>
+        </TouchableOpacity>
+      </View>
     );
   }
 
   return (
     <View style={styles.container}>
       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
-      
+
       <TouchableOpacity
         onPress={goToDemoScreen}
         style={[styles.button, styles.buttonOutline]}
@@ -62,7 +62,7 @@ const HomeScreen = () => {
       >
         <Text style={styles.buttonOutlineText}>Mini Game</Text>
       </TouchableOpacity>
-      
+
       <TouchableOpacity
         onPress={handleSignOut}
         style={[styles.button, styles.buttonOutline]}
@@ -83,18 +83,25 @@ var data = [
   { id: 4, title: "Locked Level", image: image4 },
 ]
 
-const Item = ({ size, margin, imageObj }) => (
-  imageObj.title != 'Locked Level'
+const Item = ({ size, margin, imageObj }) => {
+
+  const navigation = useNavigation()
+  const goToDetailScreen = (params) => {
+    navigation.navigate("BuildingDetails", {imageObj : params});
+  }
+
+  return imageObj.title != 'Locked Level'
     ?
-    <View
+    <TouchableOpacity
       style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
-      key={imageObj.id}>
+      key={imageObj.id}
+      onPress={()=>goToDetailScreen(imageObj)}>
       <Image
         source={imageObj.image}
         style={{ width: 150, height: 150, position: "absolute", opacity: 0.3, backgroundColor: "white" }}
       ></Image>
       <Text style={styles.imageTitle}> {imageObj.title}</Text>
-    </View>
+    </TouchableOpacity>
     :
     <View
       style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
@@ -104,7 +111,8 @@ const Item = ({ size, margin, imageObj }) => (
       ></Image>
       <Text></Text>
     </View>
-)
+
+}
 
 const calcTileDimensions = (deviceWidth, tpr) => {
   const margin = deviceWidth / (tpr * 10);
