@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Button, StyleSheet, Icon, TextInput } from 'react-native';
+import { bounce } from 'react-native/Libraries/Animated/Easing';
 import {
   ViroARScene,
   ViroText,
@@ -18,29 +19,57 @@ import {
 
 const InitialScene = (props) => {
   let data = props.sceneNavigator.viroAppProps;
+  
+  const [imageAsset, setImageAsset] = useState(require('../assets/easter-egg/12172_Egg_v1_l2.obj'))
+  const [rotationAsset,setRotationAsset] = useState([180,0,0])
+  const [bouncevar,setBouncevar] = useState({name:'rotate',run:false})
+
+  ViroMaterials.createMaterials({
+    wood:{
+      diffuseTexture:require("../assets/Egg_hatch/12172-Egg_diffuse.jpg")
+    }
+  })
+
 
   ViroAnimations.registerAnimations({
     rotate: {
-      duration: 2500,
+      duration: 5000,
       properties: {
-        // rotateX: "+=360",
-        rotateY: "+=360",
-        // rotateZ: "+=360"
-      }
+        rotateX: "+=360",
+        rotateY: "-=360",
+        rotateZ: "+=360",
+        
+        // scaleX:1,
+        // scaleY:.6,
+        // scaleZ:1,
+        opacity:9
+      },
+      easing:"EaseIn",
+      duration:5000
     }
   })
 
   ViroARTrackingTargets.createTargets({
     dummyImage: {
-      source: require('../assets/juice.jpeg'),
+      source: require('../assets/biscuit.jpeg'),
       orientation: 'Up',
       physicalWidth: 0.165
     }
   })
 
-  // Adding log once image is detected
+  // Adding log and changing conditions once image is detected
   const anchorFound = () => {
     console.log("Anchor / Image detected")
+  }
+
+  const checkEggHatched = () => {
+    if (egghatched == 0){
+      setEgghatched(1);
+      console.log("Clicked, egg hatched")
+      console.log("Show the status: ",egghatched);
+      
+    }
+
   }
 
   return (
@@ -61,11 +90,24 @@ const InitialScene = (props) => {
       <ViroAmbientLight color="#ffffff" />
         <ViroAmbientLight color="#ffffff" />
         <Viro3DObject
-          source={require('../assets/easter-egg/12172_Egg_v1_l2.obj')}
+          source={imageAsset}
           position={[0, -3, 0]}
           scale={[0.008, 0.008, 0.008]}
-          rotation={[180, 0, 0]}
-          type="OBJ" />
+          rotation={rotationAsset}
+          type="OBJ"
+          animation={bouncevar}
+          materials={["wood"]}
+          onClick={() => {
+            console.log("Hatched");
+            //alert("EGG HATCHED");
+            setImageAsset(require('../assets/easter-egg/12172_Egg_v1_l2.obj'))
+            setBouncevar({name:'rotate',run:true})
+            setImageAsset(require('../assets/Egg_hatch/egg_hatched.obj'))
+            setRotationAsset([270,0,0])
+            console.log('image changed')
+            console.log('rotation happen')
+           }} >
+        </Viro3DObject>
       </ViroARImageMarker>
     </ViroARScene>
   )
