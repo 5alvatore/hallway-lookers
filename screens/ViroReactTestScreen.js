@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Button, StyleSheet, Icon, TextInput } from 'react-native';
+import { useNavigation } from '@react-navigation/core';
 import {
   ViroARScene,
   ViroText,
@@ -18,6 +19,7 @@ import {
 
 const InitialScene = (props) => {
   let data = props.sceneNavigator.viroAppProps;
+  console.log(data);
 
   ViroAnimations.registerAnimations({
     rotate: {
@@ -44,21 +46,22 @@ const InitialScene = (props) => {
   }
 
   return (
+
     <ViroARScene>
       <ViroFlexView
-          height={1}
-          width={4.5}
-          position={[0, 2, -10]}
-          rotation={[360,0,0]}>
-          <ViroFlexView backgroundColor={'blue'} style={{ flex: 0.8, flexDirection: 'row' }} >
-            <ViroText
-              style={{ color: 'white', flex: 1 }}
-              text={'Welcome to AR !!'}
-              fontSize={50} />
-          </ViroFlexView>
+        height={1}
+        width={4.5}
+        position={[0, 2, -10]}
+        rotation={[360, 0, 0]}>
+        <ViroFlexView backgroundColor={'blue'} style={{ flex: 0.8, flexDirection: 'row' }} >
+          <ViroText
+            style={{ color: 'white', flex: 1 }}
+            text={'Welcome to AR !!'}
+            fontSize={50} />
         </ViroFlexView>
+      </ViroFlexView>
       <ViroARImageMarker target="dummyImage" onAnchorFound={anchorFound}>
-      <ViroAmbientLight color="#ffffff" />
+        <ViroAmbientLight color="#ffffff" />
         <ViroAmbientLight color="#ffffff" />
         <Viro3DObject
           source={require('../assets/easter-egg/12172_Egg_v1_l2.obj')}
@@ -72,20 +75,46 @@ const InitialScene = (props) => {
 }
 
 export default () => {
-  const [obj, setObject] = useState('egg')
+  //const [link, setlink] = useState(require('../screens/HomeScreen'))
+  const navigation = useNavigation();
+
+  const navigateToHome = () => {
+    navigation.navigate("Home");
+  }
+
+  const navigateToRankings = () => {
+    navigation.navigate("Rankings")
+  }
+
+  // to go back to the previous screen
+  const goBack = () => {
+    alert("Go back")
+  }
 
   return (
+
     <View style={styles.mainView}>
       <ViroARSceneNavigator
         initialScene={{
           scene: InitialScene
         }}
-        viroAppProps={{ "obj": Object }}
+        viroAppProps={{
+          // "link": link
+        }}
         style={{ flex: 1 }}
       />
+      <View style={styles.controlsView}>
+        <TouchableOpacity onPress={navigateToHome}
+        ><Text style={styles.text}>Home</Text></TouchableOpacity>
+        <TouchableOpacity onPress={navigateToRankings}
+        ><Text style={styles.text}>Rankings</Text></TouchableOpacity>
+        <TouchableOpacity onPress={goBack}
+        ><Text style={styles.text}>GoBack</Text></TouchableOpacity>
+      </View>
     </View>
   );
 };
+
 
 var styles = StyleSheet.create({
   container: {
@@ -106,7 +135,7 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   text: {
-    margin: 15,
+    margin: 20,
     backgroundColor: '#9d9d9d',
     padding: 10,
     fontWeight: 'bold'
