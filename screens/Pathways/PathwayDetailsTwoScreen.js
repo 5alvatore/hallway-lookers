@@ -1,10 +1,10 @@
 // necessary imports
 import React, { Component } from 'react';
-import { auth, database } from '../firebase';
+import { auth, database } from '../../firebase';
 import { StyleSheet, Text, View, Image } from 'react-native';
 
 // fetching images in a proper way
-import Images from '../assets/index';
+import Images from '../../assets/index';
 
 // 3rd part timeline component page
 import Timeline from 'react-native-timeline-flatlist';
@@ -12,7 +12,7 @@ import Timeline from 'react-native-timeline-flatlist';
 var user = null;
 var hotspots = [];
 
-export default class PathwayDetailsOneScreen extends Component {
+export default class PathwayDetailsTwoScreen extends Component {
     constructor(){
         super();
 
@@ -21,9 +21,9 @@ export default class PathwayDetailsOneScreen extends Component {
         this.renderDetail = this.renderDetail.bind(this);
 
         this.hotspots = [
-            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{width: 20, height: 20}} source={Images.timeline.icons.archery} />, "imageUrl": "erie", "lineColor": "#009688", "time": "#1", "title": "Erie Hall" },
-            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{width: 20, height: 20}} source={Images.timeline.icons.archery} />, "imageUrl": "lambton", "lineColor": "#009688", "time": "#2", "title": "Lambton Tower" },
-            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{width: 20, height: 20}} source={Images.timeline.icons.archery} />, "imageUrl": "essex", "lineColor": "#009688", "time": "#3", "title": "Essex Hall" },
+            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{width: 20, height: 20}} source={Images.timeline.icons.archery} />, "imageUrl": "welcome", "lineColor": "#009688", "time": "#1", "title": "Welcome Centre" },
+            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{width: 20, height: 20}} source={Images.timeline.icons.archery} />, "imageUrl": "caw", "lineColor": "#009688", "time": "#2", "title": "CAW Centre" },
+            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{width: 20, height: 20}} source={Images.timeline.icons.archery} />, "imageUrl": "cycle", "lineColor": "#009688", "time": "#3", "title": "Cycle Junction" },
         ]
 
         this.state = {selected: null, hotspots: this.hotspots};
@@ -60,7 +60,7 @@ export default class PathwayDetailsOneScreen extends Component {
 
     // commented it out as component refresh bug isn't fixed yet, using hardcoded values for now
     componentDidMount() {
-        //this.getData("pathway-1");  
+        //this.getData("pathway-2");  
     }
 
 
