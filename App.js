@@ -55,7 +55,7 @@ const navTheme = {
 export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator initialRouteName="Hallway Lookers"
+      <Stack.Navigator
         screenOptions={{
           headerStyle: { backgroundColor: "#121212" },
           headerTintColor: "#dee2e6"
