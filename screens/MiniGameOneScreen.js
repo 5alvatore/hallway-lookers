@@ -5,7 +5,7 @@ import { GameEngine } from 'react-native-game-engine';
 import entities from '../entities';
 import Physics from '../utils/physics';
 import { useNavigation } from '@react-navigation/core'
-import { addUnlockedBuilding } from '../services/getDataFromFirebase';
+import { addUnlockedBuilding, getUserInfo } from '../services/getDataFromFirebase';
 
 const App = (props) => {
   const [running, setRunning] = useState(false)
@@ -79,7 +79,7 @@ const App = (props) => {
         if (user) {
           reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
             if (snapshot.exists()) {
-              // update the hotspot0 timer
+              // update the hotspot1 timer
               reference.child("users").child(user.uid).child("pathway1timer").update({
                 hotspot1: getGameTime
               })
@@ -102,7 +102,7 @@ const App = (props) => {
         if (user) {
           reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
             if (snapshot.exists()) {
-              // update the hotspot0 timer
+              // update the hotspot2 timer
               reference.child("users").child(user.uid).child("pathway1timer").update({
                 hotspot2: getGameTime
               })
@@ -139,6 +139,7 @@ const App = (props) => {
               reference.child("users").child(user.uid).child("pathway1timer").update({
                 pathwayend: currentTime
               })
+              // Pathway1 was calculated during the PathwayDetailsOneScreen
               reference.child("users").child(user.uid).child("pathway1timer").update({
                 totaltime: (pathwayend - pathwaystart)
               })
@@ -149,7 +150,142 @@ const App = (props) => {
         }
       }
     }
+
   }
+
+  // develop Pathway point logic
+  const calculatePathwayPoints = (timetaken, score) => {
+    // min and max are in milliseconds, min is 30 minutes and max is 45 minutes
+    let min = 1800000, max = 2700000
+    if (score == undefined) {
+      score = 0
+    }
+    if (timetaken <= min) {
+      score += 10;
+    }
+    else if (timetaken >= min && timetaken <= max) {
+      score += 5;
+    }
+    else {
+      score -= 1
+    }
+    return score
+  }
+
+  // develop hotspot point logic
+  const calculateHotspotPoints = (timetaken, score) => {
+    // min and max are in milliseconds, min is 10 seconds and max is 1 minute
+    let min = 10000, max = 60000
+    if (score == undefined) {
+      score = 0
+    }
+    if (timetaken <= min) {
+      score += 10;
+    }
+    else if (timetaken >= min && timetaken <= max) {
+      score += 5;
+    }
+    else {
+      score -= 1
+    }
+    return score
+  }
+
+  // store pathway totaltime in a variable
+  const getTotalTime = () => {
+    user = getUserInfo()
+    if (user) {
+      // get the pathway1 totaltime and calculate points accordingly
+      reference.child("users").child(user.uid).get("pathway1timer").get().then((snapshot) => {
+        if (snapshot.exists()) {
+          const totaltime = snapshot.val().totaltime;
+          return totaltime
+        }
+      })
+    }
+  }
+
+  // store pathway userscore in a variable
+  const getUserScore = () => {
+    user = getUserInfo()
+    if (user) {
+      reference.child("users").child(user.uid).get().then((snapshot) => {
+        if (snapshot.exists()) {
+          const userscore = snapshot.val().score;
+          return userscore
+        }
+      })
+    }
+  }
+
+  // to calculate the pathway points of a game and setting it in score
+  const calculatePoints = () => {
+    totaltime = getTotalTime() // get time for pathway 1
+    userscore = getUserScore() // get current score for pathway 1
+
+    // calculate score logic based on timer
+    const pathwayscorecalculated = calculatePathwayPoints(totaltime, userscore)
+    reference.child("users").child(user.uid).update({
+      score: pathwayscorecalculated
+    })
+  }
+
+  // get time for each mini game played
+  const getHotTime = (hotspot_index) => {
+    user = getUserInfo()
+    if (hotspot_index == 0){
+      // get time for hotspot 0
+      if (user){
+        reference.child("users").child(user.uid).get("pathway1timer").get().then((snapshot) => {
+          if (snapshot.exists()) {
+            const totaltime = snapshot.val().hotspot0;
+            return totaltime
+          }
+        })
+      }
+    }
+    else if (hotspot_index == 1){
+      // get time for hotspot 1
+      if (user){
+        reference.child("users").child(user.uid).get("pathway1timer").get().then((snapshot) => {
+          if (snapshot.exists()) {
+            const totaltime = snapshot.val().hotspot1;
+            return totaltime
+          }
+        })
+      }
+    }
+    else{
+      // get time for hotspot 2
+      if (user){
+        reference.child("users").child(user.uid).get("pathway1timer").get().then((snapshot) => {
+          if (snapshot.exists()) {
+            const totaltime = snapshot.val().hotspot2;
+            return totaltime
+          }
+        })
+      }
+    }
+  }
+
+  // to calculate the hotspot points of a game
+  const calculateHotPoints = () => {
+    userscore = getUserScore()
+    if (props.route.params.dataFromAR.imageUrl == 'erie'){
+      totaltime = getHotTime(0)
+    }
+    else if (props.route.params.dataFromAR.imageUrl == 'lambton'){
+      totaltime = getHotTime(1)
+    }
+    else {
+      totaltime = getHotTime(2)
+    }
+    const hotspotscorecalculated = calculateHotspotPoints(totaltime,userscore)
+    reference.child("users").child(user.uid).update({
+      score: hotspotscorecalculated
+    })
+  }
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -195,9 +331,15 @@ const App = (props) => {
             {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Lambton Tower Unlocked!!' :
               props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Essex Hall Unlocked!!' :
                 props.route.params.dataFromAR.imageUrl == 'essex' ? 'Pathway Completed!!' : ''}
-            {storeTimeForHotspot()}
-            {getGameTime}
+
+            {/* function to store time taken for current hotspot */}
+            {storeTimeForHotspot()} 
+            {/* function to calculate time taken to complete a pathway */}
             {getlastTimeForPathway1()}
+            {/* function to calculate points scored in a particular pathway */}
+            {calculatePoints()}
+            {/* function to calculate points scored in a particular hotspot */}
+            {calculateHotPoints()}
             {/* New building unlocked!!! */}
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
