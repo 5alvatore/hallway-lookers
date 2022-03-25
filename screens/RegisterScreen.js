@@ -46,24 +46,9 @@ const RegisterScreen = () => {
         console.log("user : ", auth.currentUser.uid);
         database.ref('users/' + auth.currentUser.uid).set({
             email: email,
-            unlocked_buildings: ["Lambton_Tower_uow"]
+            unlocked_buildings: ["erie"]
           });
 
-        // reference.child("users").get().then((snapshot) => {
-        //   if (snapshot.exists()) {
-        //     console.log(snapshot.val(), snapshot.val().length);
-
-        //     database.ref('users/' + snapshot.val().length).set({
-        //       email: email,
-        //       unlocked_buildings: ["lambton_tower_uow"]
-        //     });
-        //   } else {
-        //     console.log("No data available");
-        //   }
-
-        // }).catch((error) => {
-        //   console.error(error);
-        // });
       })
       .catch(error => alert(error.message))
   }

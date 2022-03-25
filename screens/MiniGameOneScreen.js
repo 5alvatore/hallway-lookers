@@ -4,12 +4,16 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { GameEngine } from 'react-native-game-engine';
 import entities from '../entities';
 import Physics from '../utils/physics';
+import { useNavigation } from '@react-navigation/core'
+import { addUnlockedBuilding } from '../services/getDataFromFirebase';
 
-export default function App() {
+const App = (props) => {
   const [running, setRunning] = useState(false)
   const [gameEngine, setGameEngine] = useState(null)
   const [currentPoints, setCurrentPoints] = useState(0)
   const [endGame, setEndGame] = useState(false)
+  const navigation = useNavigation()
+
   useEffect(() => {
     setRunning(false)
   }, [])
@@ -29,17 +33,17 @@ export default function App() {
               break;
             case 'new_point':
               setCurrentPoints(currentPoints + 1)
-              if(currentPoints == 2){
+              if (currentPoints == 2) {
                 setRunning(false)
                 gameEngine.stop()
                 setEndGame(true)
               }
               break;
-//            case 'win_point':
-//              if(currentPoints === 5)
-//              setRunning(false)
-//              gameEngine.stop()
-//             break;
+            //            case 'win_point':
+            //              if(currentPoints === 5)
+            //              setRunning(false)
+            //              gameEngine.stop()
+            //             break;
           }
         }}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }}
@@ -49,10 +53,26 @@ export default function App() {
       </GameEngine>
       {endGame ?
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 40 }}>
-              YOU WON!!!
+          <Text style={{ fontWeight: 'bold', color: 'red', fontSize: 40, textAlign: 'center' }}>
+            YOU WON!!!
+          </Text>
+          <Text style={{ fontWeight: 'bold', color: 'yellow', fontSize: 30, textAlign: 'center' }}>
+            {'\n'}
+            {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Lambton Tower Unlocked!!' :
+              props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Essex Hall Unlocked!!' :
+                props.route.params.dataFromAR.imageUrl == 'essex' ? 'Pathway Completed!!' : ''}
+            {/* New building unlocked!!! */}
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
+            onPress={() => {
+              addUnlockedBuildingToDB(props.route.params.dataFromAR)
+              navigation.navigate('Hallway Lookers', { screen: 'PathwayScreen' })
+            }}>
+            <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 30 }}>
+              Go To Pathways
+            </Text>
+          </TouchableOpacity>
+          {/* <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
             onPress={() => {
               setCurrentPoints(0)
               setRunning(true)
@@ -61,18 +81,18 @@ export default function App() {
             <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 30 }}>
               RESTART GAME
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
         </View> : null}
 
 
       {!running && !endGame ?
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-          <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center',fontSize: 40 }}>
-              Flappy Birds
+          <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center', fontSize: 40 }}>
+            Flappy Birds
           </Text>
-          <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center',fontSize: 40 }}>
-              Reach 5 points to Win
+          <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center', fontSize: 40 }}>
+            Reach 5 points to Win
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
             onPress={() => {
@@ -89,3 +109,20 @@ export default function App() {
     </View>
   );
 }
+
+function addUnlockedBuildingToDB(data) {
+  console.log("add unlock building", data.imageUrl)
+  if (data.imageUrl == 'erie') {
+    addUnlockedBuilding(1, "lambton").then((snapshot) => {
+      console.log("snapshot : ", snapshot)
+    })
+  }
+  else if (data.imageUrl == 'lambton') {
+    addUnlockedBuilding(2, "essex").then((snapshot) => {
+      console.log("snapshot : ", snapshot)
+    })
+  }
+  //continue from here....add unlocked building in db
+}
+
+export default App
