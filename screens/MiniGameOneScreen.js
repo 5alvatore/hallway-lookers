@@ -12,11 +12,145 @@ const App = (props) => {
   const [gameEngine, setGameEngine] = useState(null)
   const [currentPoints, setCurrentPoints] = useState(0)
   const [endGame, setEndGame] = useState(false)
+  const [isTimeSaved, setIsTimeSaved] = useState(false)
+  const [isTimeSavedForMini, setIsTimeSavedForMini] = useState(false)
+  const [miniStartTime, setMiniStartTime] = useState(0)
+  const [isHotspotTimeSaved, setIsHotspotTimeSaved] = useState(false)
   const navigation = useNavigation()
 
   useEffect(() => {
     setRunning(false)
   }, [])
+
+  // function to get the start time for the mini game
+  const getstartTime = () => {
+    console.log("is time saved??", isTimeSavedForMini)
+
+    if (!isTimeSavedForMini) {
+      let currentTime = Date.now()
+      console.log("Current time is ", currentTime)
+      setMiniStartTime(currentTime)
+      setIsTimeSavedForMini(true)
+
+    }
+  }
+  // function to get the mini game completed time
+  const getGameTime = () => {
+    let currentTime = Date.now()
+    if (endGame) {
+      return (currentTime - miniStartTime)
+    }
+  }
+
+  // function to store last time for each hotspot
+  const storeTimeForHotspot = () => {
+    // store time for erie building
+    if (props.route.params.dataFromAR.imageUrl == 'erie') {
+      if (!setIsHotspotTimeSaved) {
+        let currentTime = Date.now()
+        console.log("Current time is ", currentTime)
+
+        user = auth.currentUser;
+        //console.log("user is", user)
+        const reference = database.ref();
+        if (user) {
+          reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
+            if (snapshot.exists()) {
+              // update the hotspot0 timer
+              reference.child("users").child(user.uid).child("pathway1timer").update({
+                hotspot0: getGameTime
+              })
+              console.log("Total time taken for mini game", snapshot.val().hotspot0)
+              setIsHotspotTimeSaved(true);
+            }
+          })
+        }
+      }
+    }
+    // store time for lambton building
+    else if (props.route.params.dataFromAR.imageUrl == 'lambton') {
+      if (!setIsHotspotTimeSaved) {
+        let currentTime = Date.now()
+        console.log("Current time is ", currentTime)
+
+        user = auth.currentUser;
+        //console.log("user is", user)
+        const reference = database.ref();
+        if (user) {
+          reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
+            if (snapshot.exists()) {
+              // update the hotspot0 timer
+              reference.child("users").child(user.uid).child("pathway1timer").update({
+                hotspot1: getGameTime
+              })
+              console.log("Total time taken for mini game", snapshot.val().hotspot1)
+              setIsHotspotTimeSaved(true);
+            }
+          })
+        }
+      }
+    }
+    // store time for essex building
+    else if (props.route.params.dataFromAR.imageUrl == 'essex') {
+      if (!setIsHotspotTimeSaved) {
+        let currentTime = Date.now()
+        console.log("Current time is ", currentTime)
+
+        user = auth.currentUser;
+        //console.log("user is", user)
+        const reference = database.ref();
+        if (user) {
+          reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
+            if (snapshot.exists()) {
+              // update the hotspot0 timer
+              reference.child("users").child(user.uid).child("pathway1timer").update({
+                hotspot2: getGameTime
+              })
+              console.log("Total time taken for mini game", snapshot.val().hotspot2)
+              setIsHotspotTimeSaved(true);
+            }
+          })
+        }
+      }
+    }
+  }
+
+  // function to store last time for pathway 1
+  const getlastTimeForPathway1 = () => {
+    if (props.route.params.dataFromAR.imageUrl == 'essex') {
+      // if already time saved in firebase, don't save
+      console.log("is time saved??", isTimeSaved)
+
+      if (!isTimeSaved) {
+        let currentTime = Date.now()
+        console.log("Current time is ", currentTime)
+
+        user = auth.currentUser;
+        //console.log("user is", user)
+        const reference = database.ref();
+        if (user) {
+          reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
+            if (snapshot.exists()) {
+              // update the pathway timer
+              const pathwayend = snapshot.val().pathwayend
+              const pathwaystart = snapshot.val().pathwaystart
+              console.log("Pathway end time", snapshot.val().pathwayend)
+              console.log("Pathway start time", snapshot.val().pathwaystart)
+              reference.child("users").child(user.uid).child("pathway1timer").update({
+                pathwayend: currentTime
+              })
+              reference.child("users").child(user.uid).child("pathway1timer").update({
+                totaltime: (pathwayend - pathwaystart)
+              })
+              console.log("Total pathway time taken", snapshot.val().totaltime)
+              setIsTimeSaved(true);
+            }
+          })
+        }
+      }
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <Text style={{ textAlign: 'center', fontSize: 40, fontWeight: 'bold', margin: 20 }}>{currentPoints}</Text>
@@ -61,6 +195,9 @@ const App = (props) => {
             {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Lambton Tower Unlocked!!' :
               props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Essex Hall Unlocked!!' :
                 props.route.params.dataFromAR.imageUrl == 'essex' ? 'Pathway Completed!!' : ''}
+            {storeTimeForHotspot()}
+            {getGameTime}
+            {getlastTimeForPathway1()}
             {/* New building unlocked!!! */}
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
@@ -98,6 +235,7 @@ const App = (props) => {
             onPress={() => {
               setCurrentPoints(0)
               setRunning(true)
+              { getstartTime() }
               gameEngine.swap(entities())
             }}>
             <Text style={{ fontWeight: 'bold', color: 'white', fontSize: 30 }}>
