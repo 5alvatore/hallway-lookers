@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigation } from '@react-navigation/core';
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -21,7 +22,7 @@ const copyArray = (arr) => {
 var RandomNumber = Math.floor(Math.random() * 100);
 const words = [
   'cigar',
-  'rebut',
+ /* 'rebut',
   'sissy',
   'humph',
   'awake',
@@ -119,15 +120,18 @@ const words = [
   'civic',
   'forge',
   'corny',
-];
 
+*/
+];
 export default function App() {
-  const word = words[RandomNumber];
+  const word = words[0];
   //const word = "hello";
   const letters = word.split(""); // ['h', 'e', 'l', 'l', 'o']
-  const navigation = useNavigation()
+  
+  const navigation = useNavigation();
+  
   const goToHomeScreen = () => {
-    navigation.replace("MiniGameOne");
+    navigation.replace("Home");
   }
   const [rows, setRows] = useState(
     new Array(NUMBER_OF_TRIES).fill(new Array(letters.length).fill(""))
@@ -141,18 +145,18 @@ export default function App() {
       checkGameState();
     }
   }, [curRow]);
-  const refreshPage = ()=> {
-    window.location.reload();
- }
+  const RestartGame = () => {
+    navigation.replace("MiniGameTwo");
+  }
   const checkGameState = () => {
     if (checkIfWon() && gameState !== "won") {
       Alert.alert("Awesome!", "You won!", [
-        { text: "Home", onPress: goToHomePage },
+        { text: "Home", onPress: goToHomeScreen },
       ]);
       setGameState("won");
     } else if (checkIfLost() && gameState !== "lost") {
-      Alert.alert("Bad Luck",  [
-        {text: "Try Again", onPress: refreshPage}
+      Alert.alert("Bad Luck", "Try Again" [
+        { text: "Restart", onPress: RestartGame }
       ]);
       setGameState("lost");
     }
