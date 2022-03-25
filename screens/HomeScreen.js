@@ -1,6 +1,8 @@
+
 import { useNavigation } from "@react-navigation/core";
 import React from "react";
 import { auth } from "../firebase";
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, Image } from 'react-native';
 import {
   StyleSheet,
   Text,
@@ -19,6 +21,79 @@ import { database } from "../firebase";
 
 var user = null;
 var unlocked_buildings = [];
+
+// const HomeScreen = () => {
+  
+//   const navigation = useNavigation()
+
+//   const handleSignOut = () => {
+//     auth
+//       .signOut()
+//       .then(() => {
+//         navigation.replace("Login")
+//       })
+//       .catch(error => alert(error.message))
+//   }
+
+//   const tileDimensions = calcTileDimensions(width, 2.01)
+//   const goToDemoScreen = () => {
+//     navigation.replace("ViroReactTest");
+//   }
+
+//   const goToMiniGameScreen = () => {
+//     navigation.replace("MiniGameOne");
+//   }
+
+//   const goToMiniGameScreenTwo = () => {
+//     navigation.replace("MiniGameTwo");
+//   }
+
+  
+//   function HomePage() {
+//     return (
+//       <View style={styles.container}>
+//       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+//       <TouchableOpacity
+//         onPress={handleSignOut}
+//         style={[styles.button, styles.buttonOutline]}
+//       >
+//         <Text style={styles.buttonOutlineText}>Sign out</Text>
+//       </TouchableOpacity>
+//     </View>
+//     );
+//   }
+
+//   return (
+//     <View style={styles.container}>
+//       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+      
+//       <TouchableOpacity
+//         onPress={goToDemoScreen}
+//         style={[styles.button, styles.buttonOutline]}
+//       >
+//         <Text style={styles.buttonOutlineText}>AR Demo</Text>
+//       </TouchableOpacity>
+
+//       <TouchableOpacity
+//         onPress={goToMiniGameScreen}
+//         style={[styles.button, styles.buttonOutline]}
+//       >
+//         <Text style={styles.buttonOutlineText}>Mini Game</Text>
+//       </TouchableOpacity>
+//       <TouchableOpacity
+//         onPress={goToMiniGameScreenTwo}
+//         style={[styles.button, styles.buttonOutline]}
+//       >
+//         <Text style={styles.buttonOutlineText}>Mini Game 2</Text>
+//       </TouchableOpacity>
+      
+//       <TouchableOpacity
+//         onPress={handleSignOut}
+//         style={[styles.button, styles.buttonOutline]}
+//       >
+//         <Text style={styles.buttonOutlineText}>Sign out</Text>
+//       </TouchableOpacity>
+// >>>>>>> master
 
 const imagePaths = {
   lambton: require("../assets/lambton.jpg"),
@@ -193,6 +268,14 @@ export default class HomeScreen extends React.Component {
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Mini Game</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          // onPress={goToMiniGameScreen}
+          onPress={() => this.props.navigation.navigate("MiniGameTwo")}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Mini Game 2</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

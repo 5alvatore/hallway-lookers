@@ -1,16 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import LoginScreen from "./screens/LoginScreen";
-import RegisterScreen from "./screens/RegisterScreen";
-import ResetPasswordScreen from "./screens/ResetPasswordScreen";
-import HomeScreen from "./screens/HomeScreen";
-import ViroReactTestScreen from "./screens/ViroReactTestScreen";
-import MiniGameOneScreen from "./screens/MiniGameOneScreen";
+import { StatusBar } from 'expo-status-bar';
+import React from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { auth, database } from "./firebase";
-
 import {
   createDrawerNavigator,
   DrawerItem,
@@ -18,10 +11,20 @@ import {
   DrawerItemList,
 } from "@react-navigation/drawer";
 
-import ProfileScreen from "./screens/ProfileScreen";
-import PathwayScreen from "./screens/PathwayScreen";
-import RankingScreen from "./screens/RankingScreen";
-// import SignOutScreen from "./screens/SignOutScreen";
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import ResetPasswordScreen from './screens/ResetPasswordScreen';
+import HomeScreen from './screens/HomeScreen';
+import ViroReactTestScreen from './screens/ViroReactTestScreen';
+import MiniGameOneScreen from './screens/MiniGameOneScreen';
+import MiniGameTwoScreen from './screens/MiniGameTwoScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import PathwayScreen from './screens/PathwayScreen';
+import ScoreBoard from './screens/ScoreBoard';
+import RankingScreen from './screens/RankingScreen';
+import SignOutScreen from './screens/SignOutScreen';
+import PathwayDetailsOneScreen from './screens/Pathways/PathwayDetailsOneScreen';
+import PathwayDetailsTwoScreen from './screens/Pathways/PathwayDetailsTwoScreen';
 
 var name = [];
 
@@ -117,8 +120,11 @@ const DrawerRoutes = () => {
       <Drawer.Screen name="Home" component={HomeScreen} />
       <Drawer.Screen name="Profile" component={ProfileScreen} />
       <Drawer.Screen name="Pathways" component={PathwayScreen} />
+      <Drawer.Screen name="ScoreBoard" component={ScoreBoard} />
       <Drawer.Screen name="Rankings" component={RankingScreen} />
-      {/* <Drawer.Screen name="Signout" component={SignOutScreen} /> */}
+      <Drawer.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
+      <Drawer.Screen name="General Pathway" component={PathwayDetailsTwoScreen} />
+
     </Drawer.Navigator>
   );
 };
@@ -132,8 +138,8 @@ const navTheme = {
 export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator
-        initialRouteName="Hallway Lookers"
+
+      <Stack.Navigator initialRouteName="Login"
         screenOptions={{
           headerStyle: { backgroundColor: "#121212" },
           headerTintColor: "#dee2e6",
@@ -154,6 +160,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
+        <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
