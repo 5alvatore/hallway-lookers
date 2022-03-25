@@ -11,10 +11,8 @@ import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import HomeScreen from './screens/HomeScreen';
 import ViroReactTestScreen from './screens/ViroReactTestScreen';
 import MiniGameOneScreen from './screens/MiniGameOneScreen';
-
-
+import MiniGameTwoScreen from './screens/MiniGameTwoScreen';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-
 import ProfileScreen from './screens/ProfileScreen';
 import PathwayScreen from './screens/PathwayScreen';
 import ScoreBoard from './screens/ScoreBoard';
@@ -73,6 +71,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
+        <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
