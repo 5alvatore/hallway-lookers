@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Button, StyleSheet, Icon, TextInput } from 'react-native';
+import { bounce } from 'react-native/Libraries/Animated/Easing';
 import {
   ViroARScene,
   ViroText,

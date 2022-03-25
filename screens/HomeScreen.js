@@ -30,6 +30,10 @@ const HomeScreen = () => {
     navigation.replace("MiniGameOne");
   }
 
+  const goToMiniGameScreenTwo = () => {
+    navigation.replace("MiniGameTwo");
+  }
+
   
   function HomePage() {
     return (
@@ -61,6 +65,12 @@ const HomeScreen = () => {
         style={[styles.button, styles.buttonOutline]}
       >
         <Text style={styles.buttonOutlineText}>Mini Game</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={goToMiniGameScreenTwo}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Mini Game 2</Text>
       </TouchableOpacity>
       
       <TouchableOpacity
