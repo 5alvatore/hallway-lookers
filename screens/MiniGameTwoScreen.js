@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
-import { GameEngine } from 'react-native-game-engine';
 import {
   StyleSheet,
   Text,
