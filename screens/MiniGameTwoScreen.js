@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
+import { GameEngine } from 'react-native-game-engine';
 import {
   StyleSheet,
   Text,
@@ -10,6 +11,7 @@ import {
 } from "react-native";
 import { colors, CLEAR, ENTER, colorsToEmoji } from "../src/constants";
 import Keyboard from "../src/components/Keyboard";
+
 
 const NUMBER_OF_TRIES = 6;
 
@@ -124,7 +126,10 @@ export default function App() {
   const word = words[RandomNumber];
   //const word = "hello";
   const letters = word.split(""); // ['h', 'e', 'l', 'l', 'o']
-
+  const navigation = useNavigation()
+  const goToHomeScreen = () => {
+    navigation.replace("MiniGameOne");
+  }
   const [rows, setRows] = useState(
     new Array(NUMBER_OF_TRIES).fill(new Array(letters.length).fill(""))
   );
@@ -142,15 +147,18 @@ export default function App() {
  }
   const checkGameState = () => {
     if (checkIfWon() && gameState !== "won") {
-      Alert.alert("Huraaay", "You won!", [
-      //  { text: "Share", onPress: shareScore },
+      Alert.alert("Awesome!", "You won!", [
+        { text: "Home", onPress: goToHomePage },
       ]);
       setGameState("won");
     } else if (checkIfLost() && gameState !== "lost") {
-      Alert.alert("Meh", "Try again tomorrow!");
+      Alert.alert("Bad Luck",  [
+        {text: "Try Again", onPress: refreshPage}
+      ]);
       setGameState("lost");
     }
   };
+
 
   /*const shareScore = () => {
     const textMap = rows
