@@ -16,8 +16,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import PathwayScreen from './screens/PathwayScreen';
 import RankingScreen from './screens/RankingScreen';
 import SignOutScreen from './screens/SignOutScreen';
-import PathwayDetailsOneScreen from './screens/Pathways/PathwayDetailsOneScreen';
-import PathwayDetailsTwoScreen from './screens/Pathways/PathwayDetailsTwoScreen';
+
 const Stack = createNativeStackNavigator();
 
 const Drawer = createDrawerNavigator()
