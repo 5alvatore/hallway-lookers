@@ -12,7 +12,7 @@ import HomeScreen from './screens/HomeScreen';
 import ViroReactTestScreen from './screens/ViroReactTestScreen';
 import MiniGameOneScreen from './screens/MiniGameOneScreen';
 import MiniGameTwoScreen from './screens/MiniGameTwoScreen';
-import { createDrawerNavigator } from '@react-navigation/drawer';
+//import { createDrawerNavigator } from '@react-navigation/drawer';
 import ProfileScreen from './screens/ProfileScreen';
 import PathwayScreen from './screens/PathwayScreen';
 import ScoreBoard from './screens/ScoreBoard';
