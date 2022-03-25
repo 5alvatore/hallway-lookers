@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { View, Alert, Text } from "react-native";
 import { auth, database } from '../firebase';
 import Leaderboard from "react-native-leaderboard";
-// var user = null;
+var user = null;
 //var userscore= null;
 export default class AvatarAndClickable extends Component {
   constructor() {
@@ -21,84 +21,66 @@ export default class AvatarAndClickable extends Component {
   // };
 
   componentDidMount() {
-    // // simulate new users being added to leaderboard
-    // // setInterval(() => {
-    // //   const newData = {
-    // //     name: "New User Data!!",
-    // //     score: Math.floor(Math.random() * 100).toString(),
-    // //     iconUrl:
-    // //       "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
-    // //   };
-    // //   this.setState({ data: this.state.data.concat(newData) });
-    // // }, 3000);
-    // user = auth.currentUser;
-    // console.log("user is", user)
-    // const reference = database.ref();
-    // if (user) {
-    //   reference.child("users").child(user.uid).get().then((snapshot) => {
-    //     if (snapshot.exists()) {
-    //       console.log("snapshot : ",snapshot)
-    //       userscore=[]
-    //       //unlocked_buildings = []
-    //       //score = 0
-    //       if (snapshot.val().score >= 0) {
-    //         userscore.push({
-    //           'name': snapshot.val().name,
-    //           'score': snapshot.val().score
-    //         })
-    //         console.log("snapshot value", snapshot.val().score)
-    //         console.log("undescore array : ",userscore)
-    //         this.setState({ userscore: userscore })
-    //         // for (let i = 0; i < snapshot.val().unlocked_buildings.length; i++) {
-    //         //   let title_string_array = ((snapshot.val().unlocked_buildings[i]).split("_"))
-    //         //   title_string_array.pop()
-    //         //   let title = title_string_array.join(" ")
-    //         //   unlocked_buildings.push({ id: i + 1, title: title, image: snapshot.val().unlocked_buildings[i] })
-    //         // }
-    //         // score.on('value', function (snapshot) {
-    //         //   console.log(snapshot.val())
-    //         // });
-    //       }
-    //       else {
-    //         //unlocked_buildings = []
-    //         console.log("else command")
-    //       }
-
-
-    //       // for (let i = unlocked_buildings.length; i < 4; i++) {
-    //       //   unlocked_buildings.push({ id: i + 1, title: 'Locked Level', image: 'locked_level' })
-    //       // }
-    //       // console.log(unlocked_buildings)
-    //       // this.setState({ unlocked_buildings: unlocked_buildings })
-    //       //this.setState({ userscore: userscore })
-    //     }
-    //     else {
-    //       console.log("No data available");
-    //     }
-
-    //   }).catch((error) => {
-    //     console.error(error);
-    //   });
-    //   //this.setState({ userscore: userscore })
-    // }
+    // simulate new users being added to leaderboard
+    // setInterval(() => {
+    //   const newData = {
+    //     name: "New User Data!!",
+    //     score: Math.floor(Math.random() * 100).toString(),
+    //     iconUrl:
+    //       "https://www.shareicon.net/data/128x128/2016/09/15/829473_man_512x512.png"
+    //   };
+    //   this.setState({ data: this.state.data.concat(newData) });
+    // }, 3000);
+    user = auth.currentUser;
+    console.log("user is", user)
     const reference = database.ref();
-    userscore=[]
-    reference.child("users").get().then((snapshot) => {
-      if (snapshot.exists()){
-        snapshot.forEach((childsnapshot) => {
-          console.log("childsnapshot name",childsnapshot.val().name)
-          console.log("childsnapshot score",childsnapshot.val().score)
-          if (childsnapshot.val().name != undefined && childsnapshot.val().score != undefined)
-          {
+    if (user) {
+      reference.child("users").child(user.uid).get().then((snapshot) => {
+        if (snapshot.exists()) {
+          console.log("snapshot : ",snapshot)
+          userscore=[]
+          //unlocked_buildings = []
+          //score = 0
+          if (snapshot.val().score >= 0) {
             userscore.push({
-              'name': childsnapshot.val().name,
-              'score': childsnapshot.val().score
+              'name': snapshot.val().name,
+              'score': snapshot.val().score
             })
+            console.log("snapshot value", snapshot.val().score)
+            console.log("undescore array : ",userscore)
+            this.setState({ userscore: userscore })
+            // for (let i = 0; i < snapshot.val().unlocked_buildings.length; i++) {
+            //   let title_string_array = ((snapshot.val().unlocked_buildings[i]).split("_"))
+            //   title_string_array.pop()
+            //   let title = title_string_array.join(" ")
+            //   unlocked_buildings.push({ id: i + 1, title: title, image: snapshot.val().unlocked_buildings[i] })
+            // }
+            // score.on('value', function (snapshot) {
+            //   console.log(snapshot.val())
+            // });
           }
-        })
-        this.setState({userscore : userscore})
-      }
-    })
+          else {
+            //unlocked_buildings = []
+            console.log("else command")
+          }
+
+
+          // for (let i = unlocked_buildings.length; i < 4; i++) {
+          //   unlocked_buildings.push({ id: i + 1, title: 'Locked Level', image: 'locked_level' })
+          // }
+          // console.log(unlocked_buildings)
+          // this.setState({ unlocked_buildings: unlocked_buildings })
+          //this.setState({ userscore: userscore })
+        }
+        else {
+          console.log("No data available");
+        }
+
+      }).catch((error) => {
+        console.error(error);
+      });
+      //this.setState({ userscore: userscore })
+    }
   }
   // getdata(){
   // console.log("to get data")
@@ -140,7 +122,7 @@ export default class AvatarAndClickable extends Component {
           }}
         >
           <Text style={{ fontSize: 30, color: "white", paddingBottom: 10 }}>
-            Ranking
+            Scoreboard
           </Text>
         </View>
         <Leaderboard {...props} />
