@@ -19,10 +19,14 @@ const copyArray = (arr) => {
   return [...arr.map((rows) => [...rows])];
 };
 
+function useForceUpdate(){
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => value + 1); // update the state to force render
+}
 var RandomNumber = Math.floor(Math.random() * 100);
 const words = [
   'cigar',
- /* 'rebut',
+  'rebut',
   'sissy',
   'humph',
   'awake',
@@ -121,7 +125,6 @@ const words = [
   'forge',
   'corny',
 
-*/
 ];
 export default function App() {
   const word = words[0];
@@ -146,8 +149,15 @@ export default function App() {
     }
   }, [curRow]);
   const RestartGame = () => {
-    navigation.replace("MiniGameTwo");
+    setCurCol(0);
+    setCurRow(0);
+    const word = words[0];
+    const letters = word.split(""); // ['h', 'e', 'l', 'l', 'o']
+    setRows(new Array(NUMBER_OF_TRIES).fill(new Array(letters.length).fill("")));
+    setGameState("playing");
+
   }
+  const forceUpdate = useForceUpdate();
   const checkGameState = () => {
     if (checkIfWon() && gameState !== "won") {
       Alert.alert("Awesome!", "You won!", [
@@ -155,10 +165,10 @@ export default function App() {
       ]);
       setGameState("won");
     } else if (checkIfLost() && gameState !== "lost") {
-      Alert.alert("Bad Luck", "Try Again" [
+      Alert.alert("Bad Luck", "Try Again", [
         { text: "Restart", onPress: RestartGame }
       ]);
-      setGameState("lost");
+      setGameState("restart");
     }
   };
 
