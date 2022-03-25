@@ -27,6 +27,7 @@
     "react-native": "0.65.1",
     "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "~2.1.0",
+    "react-native-leaderboard": "^1.0.6",
     "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
