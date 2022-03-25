@@ -11,18 +11,19 @@ import {
   Image,
   MapView,
 } from "react-native";
-import image1 from "../assets/Lambton_Tower_uow.jpg";
-import image2 from "../assets/Essex_Hall_uow.jpg";
-import image3 from "../assets/locked.png";
-import image4 from "../assets/locked2.jpg";
+// import image1 from "../assets/lambton.jpg";
+// import image2 from "../assets/erie.jpg";
+// import image3 from "../assets/locked.png";
+// import image4 from "../assets/locked2.jpg";
 import { database } from "../firebase";
 
 var user = null;
 var unlocked_buildings = [];
 
 const imagePaths = {
-  Lambton_Tower_uow: require("../assets/Lambton_Tower_uow.jpg"),
-  Essex_Hall_uow: require("../assets/Essex_Hall_uow.jpg"),
+  lambton: require("../assets/lambton.jpg"),
+  essex: require("../assets/essex.jpg"),
+  erie: require("../assets/erie.jpg"),
   locked_level: require("../assets/locked.png"),
 };
 
@@ -128,11 +129,12 @@ export default class HomeScreen extends React.Component {
                 i < snapshot.val().unlocked_buildings.length;
                 i++
               ) {
-                let title_string_array = snapshot
-                  .val()
-                  .unlocked_buildings[i].split("_");
-                title_string_array.pop();
-                let title = title_string_array.join(" ");
+                let title_string_array =
+                  // .unlocked_buildings[i].split("_");
+                  snapshot.val().unlocked_buildings[i];
+                // title_string_array.pop();
+                // let title = title_string_array.join(" ");
+                var title = title_string_array;
                 unlocked_buildings.push({
                   id: i + 1,
                   title: title,

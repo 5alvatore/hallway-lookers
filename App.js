@@ -23,39 +23,44 @@ import PathwayScreen from "./screens/PathwayScreen";
 import RankingScreen from "./screens/RankingScreen";
 // import SignOutScreen from "./screens/SignOutScreen";
 
-var user = null;
 var name = [];
 
-user = auth.currentUser;
+const user = auth.currentUser;
 // console.log("User:: " + database.ref("/users" + user.uid + "/name"));
 
 var title;
-const displayInfo = database
-  .ref()
-  .child("users")
-  .child(user.uid)
-  // .child("name")
-  .get()
-  .then((snapshot) => {
-    if (snapshot.exists()) {
-      name = [];
-      if (snapshot.val().name != undefined && snapshot.val().name.length > 0) {
-        let title_string_array = snapshot.val().name.split(" ");
-        // title_string_array.pop();
-        title = title_string_array[0];
-        // for (let i = 0; i < snapshot.val().name.length; i++) {
-        //   let title_string_array = snapshot.val().name[i];
-        //   title += title_string_array;
-        // }
-        console.log(title);
-      } else {
+
+if (user) {
+  const displayInfo = database
+    .ref()
+    .child("users")
+    .child(user.uid)
+    // .child("name")
+    .get()
+    .then((snapshot) => {
+      if (snapshot.exists()) {
         name = [];
+        if (
+          snapshot.val().name != undefined &&
+          snapshot.val().name.length > 0
+        ) {
+          let title_string_array = snapshot.val().name.split(" ");
+          // title_string_array.pop();
+          title = title_string_array[0];
+          // for (let i = 0; i < snapshot.val().name.length; i++) {
+          //   let title_string_array = snapshot.val().name[i];
+          //   title += title_string_array;
+          // }
+          console.log(title);
+        } else {
+          name = [];
+        }
+        // snapshot.val();
+      } else {
+        console.log("No data available");
       }
-      // snapshot.val();
-    } else {
-      console.log("No data available");
-    }
-  });
+    });
+}
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -69,8 +74,14 @@ const DrawerRoutes = () => {
         return (
           <DrawerContentScrollView {...props}>
             <View style={styles.userInfoSection}>
-              <View style={{ flexDirection: "row", marginTop: 15 }}>
-                <Text style={styles.username}>Username</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  marginTop: 15,
+                  marginBottom: 10,
+                }}
+              >
+                <Text style={styles.username}>Username:</Text>
                 <Text style={styles.title}>{title}</Text>
                 {/* <Text style={styles.title}>Harkirat</Text> */}
               </View>
@@ -169,6 +180,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 3,
     fontWeight: "bold",
+    color: "#ffffff",
   },
   userInfoSection: {
     paddingLeft: 20,

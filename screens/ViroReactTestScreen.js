@@ -75,16 +75,6 @@ const InitialScene = (props) => {
     await sound.unloadAsync();
   }
 
-  // React.useEffect(() => {
-  //   return sound
-  //     ? () => {
-  //         console.log("Unloading Sound");
-  //         sound.stopAsync();
-  //         sound.unloadAsync();
-  //       }
-  //     : undefined;
-  // }, [audioStatus]);
-
   return (
     <ViroARScene>
       <ViroFlexView
