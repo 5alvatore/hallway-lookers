@@ -1,14 +1,15 @@
 import React from 'react'
-import { auth, database } from '../firebase';
 import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
+import { getUserInfo, getUnlockedBuildingData } from '../services/getDataFromFirebase';
 
 var user = null;
 var unlocked_buildings = []
 
 const imagePaths = {
-  Lambton_Tower_uow: require('../assets/Lambton_Tower_uow.jpg'),
-  Essex_Hall_uow: require('../assets/Essex_Hall_uow.jpg'),
-  locked_level: require('../assets/locked.png')
+  locked_level: require('../assets/locked.png'),
+  essex: require('../assets/timeline/buildings/essexhall.jpg'),
+  lambton: require('../assets/timeline/buildings/lambtontower.jpg'),
+  erie: require('../assets/timeline/buildings/eriehall.jpg'),
 }
 
 const { width } = Dimensions.get("window");
@@ -53,10 +54,10 @@ export default class PathwayScreen extends React.Component {
   }
 
   componentDidMount() {
-    user = auth.currentUser;
-    const reference = database.ref();
+    user = getUserInfo();
+    // console.log("user : ", user)
     if (user) {
-      reference.child("users").child(user.uid).get().then((snapshot) => {
+      getUnlockedBuildingData(user).then((snapshot) => {
         if (snapshot.exists()) {
           unlocked_buildings = []
           if (snapshot.val().unlocked_buildings != undefined &&
@@ -65,7 +66,7 @@ export default class PathwayScreen extends React.Component {
               let title_string_array = ((snapshot.val().unlocked_buildings[i]).split("_"))
               title_string_array.pop()
               let title = title_string_array.join(" ")
-              unlocked_buildings.push({ id: i + 1, title: title, image: snapshot.val().unlocked_buildings[i] })
+              unlocked_buildings.push({ id: i + 1, title: snapshot.val().unlocked_buildings[i], image: snapshot.val().unlocked_buildings[i] })
             }
           }
           else {
@@ -75,22 +76,21 @@ export default class PathwayScreen extends React.Component {
           for (let i = unlocked_buildings.length; i < 4; i++) {
             unlocked_buildings.push({ id: i + 1, title: 'Locked Level', image: 'locked_level' })
           }
-          console.log(unlocked_buildings)
+          // console.log(unlocked_buildings)
           this.setState({ unlocked_buildings: unlocked_buildings })
 
         } else {
           console.log("No data available");
         }
+      })
+      .catch((error) => console.log(error))
 
-      }).catch((error) => {
-        console.error(error);
-      });
     }
   }
 
   render() {
     const { unlocked_buildings } = this.state;
-    console.log(unlocked_buildings);
+    // console.log(unlocked_buildings);
 
     const tileDimensions = calcTileDimensions(width, 2.01);
 
