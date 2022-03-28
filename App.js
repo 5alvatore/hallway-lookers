@@ -11,8 +11,6 @@ import ResetPasswordScreen from './screens/ResetPasswordScreen';
 import HomeScreen from './screens/HomeScreen';
 import ViroReactTestScreen from './screens/ViroReactTestScreen';
 import MiniGameOneScreen from './screens/MiniGameOneScreen';
-import MiniGameTwoScreen from './screens/MiniGameTwoScreen';
-//import { createDrawerNavigator } from '@react-navigation/drawer';
 import ProfileScreen from './screens/ProfileScreen';
 import PathwayScreen from './screens/PathwayScreen';
 import ScoreBoard from './screens/ScoreBoard';
@@ -59,7 +57,7 @@ const navTheme = {
 export default function App() {
   return (
     <NavigationContainer theme={navTheme}>
-      <Stack.Navigator initialRouteName="Login"
+      <Stack.Navigator
         screenOptions={{
           headerStyle: { backgroundColor: "#121212" },
           headerTintColor: "#dee2e6"
@@ -71,7 +69,8 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
-        <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
+        <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
+        <Stack.Screen name="Rankings" component={RankingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
