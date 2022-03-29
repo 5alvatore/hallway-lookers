@@ -132,11 +132,11 @@ android {
     }
 
     defaultConfig {
-        applicationId 'com.testrandom.project'
+        applicationId 'com.salvatore.hallwaylookers'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "0.3.0"
     }
     splits {
         abi {

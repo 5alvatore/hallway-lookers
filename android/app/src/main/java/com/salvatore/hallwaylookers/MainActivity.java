@@ -1,4 +1,4 @@
-package com.testrandom.project;
+package com.salvatore.hallwaylookers;
 
 import android.os.Build;
 import android.os.Bundle;

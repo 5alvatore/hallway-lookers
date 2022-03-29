@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "hallway-lookers",
+    "name": "Hallway Lookers",
     "slug": "hallway-lookers",
-    "version": "1.0.0",
+    "version": "0.3.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,12 +23,13 @@
       "supportsTablet": true
     },
     "android": {
+      "icon": "./assets/icon.png",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
       "softwareKeyboardLayoutMode": "pan",
-      "package": "com.testrandom.project"
+      "package": "com.salvatore.hallwaylookers"
     },
     "web": {
       "favicon": "./assets/favicon.png"

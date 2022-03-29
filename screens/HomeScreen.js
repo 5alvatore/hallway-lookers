@@ -54,19 +54,6 @@ const HomeScreen = () => {
       {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
       
       <TouchableOpacity
-        onPress={goToDemoScreen}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>AR Demo</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={goToMiniGameScreen}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>Mini Game</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
         onPress={goToMiniGameScreenTwo}
         style={[styles.button, styles.buttonOutline]}
       >
