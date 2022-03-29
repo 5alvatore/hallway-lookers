@@ -92,7 +92,7 @@ export default class ViroReactTestScreen extends React.Component {
     let data = props.sceneNavigator.viroAppProps;
     // console.log("data :", data)
     let hotspotData = data.datafromPathway
-    console.log("hotspot data : ", hotspotData)
+    //console.log("hotspot data : ", hotspotData)
     show2D = data.show2D
 
     const [imageAsset, setImageAsset] = useState(require('../assets/easter-egg/12172_Egg_v1_l2.obj'))

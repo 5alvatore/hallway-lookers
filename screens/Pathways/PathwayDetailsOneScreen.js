@@ -29,7 +29,7 @@ export default class PathwayDetailsOneScreen extends Component {
             { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "essex", "lineColor": "#009688", "time": "#3", "title": "Essex Hall" },
         ]
 
-        this.state = { selected: null, hotspots: this.hotspots, unlocked_buildings: [] };
+        this.state = { selected: null, hotspots: this.hotspots, unlocked_buildings: [], isTimeSaved: false };
     }
 
     onEventPress(data) {
@@ -45,6 +45,46 @@ export default class PathwayDetailsOneScreen extends Component {
         // return <Text style={{ marginTop: 10 }}>Selected hotspot: {this.state.selected.title} at {this.state.selected.time}</Text>
     }
 
+    // function to save the current time and store it in firebase
+    getCurrentTime() {
+        // if already time saved in firebase, don't save
+        console.log("is time saved??", this.state.isTimeSaved)
+
+        if (!this.state.isTimeSaved) {
+            let currentTime = Date.now()
+            console.log("Current time is ", currentTime)
+
+            user = auth.currentUser;
+            //console.log("user is", user)
+            const reference = database.ref();
+            if (user) {
+                reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
+                    if (snapshot.exists()) {
+                        // update the pathway1 timer
+                        console.log("total time taken for pathway 1", snapshot.val().totaltime)
+                        reference.child("users").child(user.uid).child("pathway1timer").update({
+                            pathwaystart: currentTime
+                        })
+                        this.setState({ isTimeSaved: true })
+                    }
+                    // if there is no snapshot or a new user
+                    else {
+                        reference.child("users").child(user.uid).set({
+                            'pathway1timer': {
+                                'hotspot0': 0,
+                                'hotspot1': 0,
+                                'hotspot2': 0
+                            },
+                            'score': 0
+                        })
+                    }
+
+
+                })
+            }
+        }
+    }
+
     renderDetail(rowData, sectionID, rowID) {
         let title = <Text style={[styles.title]}>{rowData.title}</Text>
         var desc = null
@@ -55,6 +95,8 @@ export default class PathwayDetailsOneScreen extends Component {
                         this.state.unlocked_buildings.indexOf(rowData.imageUrl) > -1 ?
                             <TouchableOpacity
                                 onPress={() => {
+                                    // store the pathway 1 start time in firebase to later calculate the difference
+                                    this.getCurrentTime();
                                     this.props.navigation.navigate('ViroReactTest', { datafromPathway: rowData })
                                 }}>
 
