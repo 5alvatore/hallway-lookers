@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Button, StyleSheet, Icon, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, Button, StyleSheet, Icon, TextInput, Image } from 'react-native';
 import { bounce } from 'react-native/Libraries/Animated/Easing';
 import {
   ViroARScene,
@@ -15,7 +15,8 @@ import {
   ViroARImageMarker,
   ViroFlexView
 } from '@viro-community/react-viro';
-import Images from '../assets/index'
+import { useNavigation } from '@react-navigation/core';
+import Images from '../assets/index';
 
 
 export default class ViroReactTestScreen extends React.Component {
@@ -26,12 +27,29 @@ export default class ViroReactTestScreen extends React.Component {
       obj: 'egg'
     };
     show2D = true
+    this.navigateToHome = this.navigateToHome.bind(this);
+    this.navigateToRankings = this.navigateToRankings.bind(this);
+    this.navigateToPathwayScreen = this.navigateToPathwayScreen.bind(this);
+  }
+
+  navigateToHome() {
+    this.props.navigation.navigate("Home");
+  }
+
+  navigateToRankings() {
+    this.props.navigation.navigate("Rankings")
+  }
+
+  // to go back to the previous screen that is the pathway screen
+  navigateToPathwayScreen() {
+    this.props.navigation.navigate("CS Pathway")
   }
 
   render() {
     // const [obj, setObject] = useState('egg')
     const datafromPathway = this.props.route.params.datafromPathway
     const { obj } = this.state;
+
     return (
       <View style={styles.mainView}>
         <ViroARSceneNavigator
@@ -41,6 +59,17 @@ export default class ViroReactTestScreen extends React.Component {
           viroAppProps={{ "obj": Object, "datafromPathway": datafromPathway, "show2D": true }}
           style={{ flex: 1 }}
         />
+        <View style={styles.controlsView}>
+          <TouchableOpacity onPress={this.navigateToHome}>
+            <Image source={require('../assets/house.png')} style={styles.iconStyle}></Image>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.navigateToRankings}>
+            <Image source={require('../assets/ranking.png')} style={styles.iconStyle}></Image>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.navigateToPathwayScreen}>
+            <Image source={require('../assets/left-arrow.png')} style={styles.iconStyle}></Image>
+          </TouchableOpacity>
+        </View>
         {/* <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
             onPress={() => {
               this.props.navigation.navigate('MiniGameOne', { dataFromAR: datafromPathway  })
@@ -63,7 +92,7 @@ export default class ViroReactTestScreen extends React.Component {
     let data = props.sceneNavigator.viroAppProps;
     // console.log("data :", data)
     let hotspotData = data.datafromPathway
-    console.log("hotspot data : ", hotspotData)
+    //console.log("hotspot data : ", hotspotData)
     show2D = data.show2D
 
     const [imageAsset, setImageAsset] = useState(require('../assets/easter-egg/12172_Egg_v1_l2.obj'))
@@ -126,24 +155,24 @@ export default class ViroReactTestScreen extends React.Component {
 
     return (
       <ViroARScene>
-        
-          <ViroARImageMarker target="buildingImage" onAnchorFound={(anchor) => this.anchorFound(anchor, "show2DObject")}>
-            <ViroText
-              text={hotspotData.title == 'Erie Hall' ? 'Erie Hall' :
-                hotspotData.title == 'Lambton Tower' ? 'Lambton Tower' :
-                  hotspotData.title == 'Essex Hall' ? 'Essex Hall' : ''}
-              color="red"
-              style={
-                {
-                  fontSize: 30, color: "blue"
-                }
+
+        <ViroARImageMarker target="buildingImage" onAnchorFound={(anchor) => this.anchorFound(anchor, "show2DObject")}>
+          <ViroText
+            text={hotspotData.title == 'Erie Hall' ? 'Erie Hall' :
+              hotspotData.title == 'Lambton Tower' ? 'Lambton Tower' :
+                hotspotData.title == 'Essex Hall' ? 'Essex Hall' : ''}
+            color="red"
+            style={
+              {
+                fontSize: 30, color: "blue"
               }
-              rotation={[270, 360, 0]}
-              scale={[0.1, 0.1, 0.1]}
-              outerStroke={{ type: "Outline", width: 1, color: 'black' }}
-            />
-          </ViroARImageMarker>
-        
+            }
+            rotation={[270, 360, 0]}
+            scale={[0.1, 0.1, 0.1]}
+            outerStroke={{ type: "Outline", width: 1, color: 'black' }}
+          />
+        </ViroARImageMarker>
+
         <ViroARImageMarker target="hotspotImage" onAnchorFound={(anchor) => this.anchorFound(anchor, "show3DObject")}>
           <ViroAmbientLight color="#ffffff" />
           <ViroAmbientLight color="#ffffff" />
@@ -161,7 +190,7 @@ export default class ViroReactTestScreen extends React.Component {
               setBouncevar({ name: 'rotate', run: true })
               setImageAsset(require('../assets/Egg_hatch/egg_hatched.obj'))
               setRotationAsset([270, 0, 0])
-              setTimeout(() => {  this.gotToMiniGame(hotspotData); }, 2000);
+              setTimeout(() => { this.gotToMiniGame(hotspotData); }, 2000);
 
             }} >
           </Viro3DObject>
@@ -183,7 +212,17 @@ export default class ViroReactTestScreen extends React.Component {
 
   gotToMiniGame = (hotspotData) => {
     console.log("going to mini game")
-    this.props.navigation.navigate('MiniGameOne', { dataFromAR: hotspotData })
+    // if hotpsot 0 or 2 ,play flappy bird 
+    if (hotspotData.imageUrl == 'erie' || hotspotData.imageUrl == 'essex')
+    {
+      this.props.navigation.navigate('MiniGameOne', { dataFromAR: hotspotData })
+    }
+    // play wordle if hotspot 1
+    else if (hotspotData.imageUrl == 'lambton')
+    {
+      this.props.navigation.navigate('MiniGameTwo', { dataFromAR: hotspotData })
+    }
+    
   }
 
 }
@@ -210,5 +249,10 @@ var styles = StyleSheet.create({
     backgroundColor: '#9d9d9d',
     padding: 10,
     fontWeight: 'bold'
+  },
+  iconStyle: {
+    flex: 0.7,
+    height: 30,
+    width: 70
   }
 });
