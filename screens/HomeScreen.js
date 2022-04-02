@@ -1,107 +1,75 @@
-import { useNavigation } from '@react-navigation/core';
-import React from 'react'
-import { auth } from '../firebase';
-import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, Image } from 'react-native';
-import image1 from "../assets/Lambton_Tower_uow.jpg";
-import image2 from "../assets/Essex_Hall_uow.jpg";
-import image3 from "../assets/locked.png";
-import image4 from "../assets/locked2.jpg";
-import {database } from '../firebase';
+import React from "react";
+import { auth } from "../firebase";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Dimensions,
+  Image,
+} from "react-native";
+import {
+  getUserInfo,
+  getUnlockedBuildingData,
+} from "../services/getDataFromFirebase";
 
-const HomeScreen = () => {
-  
-  const navigation = useNavigation()
+var user = null;
+var unlocked_buildings = [];
 
-  const handleSignOut = () => {
-    auth
-      .signOut()
-      .then(() => {
-        navigation.replace("Login")
-      })
-      .catch(error => alert(error.message))
-  }
-
-  const tileDimensions = calcTileDimensions(width, 2.01)
-  const goToDemoScreen = () => {
-    navigation.replace("ViroReactTest");
-  }
-
-  const goToMiniGameScreen = () => {
-    navigation.replace("MiniGameOne");
-  }
-
-  const goToMiniGameScreenTwo = () => {
-    navigation.replace("MiniGameTwo");
-  }
-
-  
-  function HomePage() {
-    return (
-      <View style={styles.container}>
-      {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
-      <TouchableOpacity
-        onPress={handleSignOut}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>Sign out</Text>
-      </TouchableOpacity>
-    </View>
-    );
-  }
-
-  return (
-    <View style={styles.container}>
-      {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
-      
-      <TouchableOpacity
-        onPress={goToMiniGameScreenTwo}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>Mini Game 2</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity
-        onPress={handleSignOut}
-        style={[styles.button, styles.buttonOutline]}
-      >
-        <Text style={styles.buttonOutlineText}>Sign out</Text>
-      </TouchableOpacity>
-
-    </View>
-  );
-}
+const imagePaths = {
+  lambton: require("../assets/timeline/buildings/lambtontower.jpg"),
+  essex: require("../assets/timeline/buildings/essexhall.jpg"),
+  erie: require("../assets/timeline/buildings/eriehall.jpg"),
+  locked_level: require("../assets/locked.png"),
+};
 
 const { width } = Dimensions.get("window");
 
-var data = [
-  { id: 1, title: "Lambton Tower", image: image1 },
-  { id: 2, title: "Essex Hall", image: image2 },
-  { id: 3, title: "Locked Level", image: image3 },
-  { id: 4, title: "Locked Level", image: image4 },
-]
-
-const Item = ({ size, margin, imageObj }) => (
-  imageObj.title != 'Locked Level'
-    ?
+const Item = ({ size, margin, imageObj }) =>
+  imageObj.title != "Locked Level" ? (
+    <TouchableOpacity
+      onPress={() =>
+        this.props.navigation.navigate("buildingdetailscreen", {
+          datafromPathway: imageObj.image,
+        })
+      }
+      key={imageObj.id + imageObj.image + "01"}
+    >
+      <View
+        style={[
+          styles.item,
+          { width: size, height: size, marginHorizontal: margin },
+        ]}
+        key={imageObj.id}
+      >
+        <Image
+          source={imagePaths[imageObj.image]}
+          style={{
+            width: 100,
+            height: 100,
+            position: "absolute",
+            opacity: 0.3,
+            backgroundColor: "white",
+          }}
+        ></Image>
+        <Text style={styles.imageTitle}> {imageObj.title}</Text>
+      </View>
+    </TouchableOpacity>
+  ) : (
     <View
-      style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
-      key={imageObj.id}>
+      style={[
+        styles.item,
+        { width: size, height: size, marginHorizontal: margin },
+      ]}
+      key={imageObj.id}
+    >
       <Image
-        source={imageObj.image}
-        style={{ width: 150, height: 150, position: "absolute", opacity: 0.3, backgroundColor: "white" }}
-      ></Image>
-      <Text style={styles.imageTitle}> {imageObj.title}</Text>
-    </View>
-    :
-    <View
-      style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
-      key={imageObj.id}>
-      <Image source={imageObj.image}
-        style={{ width: 130, height: 130, position: "absolute" }}
+        source={imagePaths[imageObj.image]}
+        style={{ width: 80, height: 80, position: "absolute" }}
       ></Image>
       <Text></Text>
     </View>
-)
+  );
 
 const calcTileDimensions = (deviceWidth, tpr) => {
   const margin = deviceWidth / (tpr * 10);
@@ -109,7 +77,103 @@ const calcTileDimensions = (deviceWidth, tpr) => {
   return { size, margin };
 };
 
-export default HomeScreen
+export default class HomeScreen extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      unlocked_buildings: [],
+    };
+  }
+
+  componentDidMount() {
+    user = getUserInfo();
+    if (user) {
+      getUnlockedBuildingData(user)
+        .then((snapshot) => {
+          if (snapshot.exists()) {
+            unlocked_buildings = [];
+            if (
+              snapshot.val().unlocked_buildings != undefined &&
+              snapshot.val().unlocked_buildings.length > 0
+            ) {
+              for (
+                let i = 0;
+                i < snapshot.val().unlocked_buildings.length;
+                i++
+              ) {
+                let title_string_array =
+                  // .unlocked_buildings[i].split("_");
+                  snapshot.val().unlocked_buildings[i];
+                // title_string_array.pop();
+                // let title = title_string_array.join(" ");
+                var title = title_string_array;
+                unlocked_buildings.push({
+                  id: i + 1,
+                  title: title,
+                  image: snapshot.val().unlocked_buildings[i],
+                });
+              }
+            } else {
+              unlocked_buildings = [];
+            }
+
+            for (let i = unlocked_buildings.length; i < 6; i++) {
+              unlocked_buildings.push({
+                id: i + 1,
+                title: "Locked Level",
+                image: "locked_level",
+              });
+            }
+            console.log(unlocked_buildings);
+            this.setState({ unlocked_buildings: unlocked_buildings });
+          } else {
+            console.log("No data available");
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }
+
+  render() {
+    const { unlocked_buildings } = this.state;
+    // console.log(unlocked_buildings);
+
+    const tileDimensions = calcTileDimensions(width, 3);
+
+    return (
+      <View style={styles.container}>
+        {unlocked_buildings.map((i) =>
+          Item({ ...tileDimensions, imageObj: i })
+        )}
+
+        <TouchableOpacity
+          // onPress={goToMiniGameScreen}
+          onPress={() => this.props.navigation.navigate("MiniGameTwo")}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Mini Game 2</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() =>
+            auth
+              .signOut()
+              .then(() => {
+                this.props.navigation.navigate("Login");
+              })
+              .catch((error) => alert(error.message))
+          }
+          // onPress={handleSignOut}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Sign out</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -117,58 +181,58 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     marginTop: 60,
-    overflow: 'scroll',
+    overflow: "scroll",
   },
   item1: {
     alignSelf: "flex-start",
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 20,
     marginBottom: 80,
   },
   item: {
     alignSelf: "flex-start",
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 20,
     marginBottom: 80,
     borderWidth: 2,
-    borderColor: '#eddcd2',
-    borderRadius: 4
+    borderColor: "#eddcd2",
+    borderRadius: 4,
   },
   itemText: {
-    fontSize: 20
+    fontSize: 20,
   },
   imageTitle: {
-    color: 'white',
+    color: "white",
     fontWeight: "bold",
     marginTop: -20,
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#941b0c',
-    width: '30%',
+    backgroundColor: "#941b0c",
+    width: "30%",
     marginHorizontal: 130,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 50,
     padding: 10,
     borderRadius: 10,
   },
   buttonOutline: {
-    backgroundColor: '#941b0c',
+    backgroundColor: "#941b0c",
     marginTop: 5,
-    borderColor: '#9B2226',
+    borderColor: "#9B2226",
     borderWidth: 2,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: '700',
+    color: "white",
+    fontWeight: "700",
     fontSize: 16,
   },
   buttonOutlineText: {
-    color: 'white',
-    fontWeight: '700',
+    color: "white",
+    fontWeight: "700",
     fontSize: 16,
   },
 });
