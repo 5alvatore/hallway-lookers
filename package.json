@@ -36,7 +36,8 @@
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "util": "^0.12.4",
-    "validator": "^13.7.0"
+    "validator": "^13.7.0",
+    "expo-av": "~10.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
