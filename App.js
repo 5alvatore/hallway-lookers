@@ -148,6 +148,8 @@ export default function App() {
         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
         <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
+        <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
+        <Stack.Screen name="Rankings" component={RankingScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

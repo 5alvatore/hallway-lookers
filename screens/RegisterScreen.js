@@ -4,8 +4,16 @@ import { Alert, KeyboardAvoidingView, StyleSheet, Text, TextInput, TouchableOpac
 import { auth, database } from '../firebase';
 
 const RegisterScreen = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [registerForm, setRegisterForm] = useState(
+    {
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      score: 100
+    }
+  )
 
   const navigation = useNavigation()
 
@@ -37,22 +45,78 @@ const RegisterScreen = () => {
     );
 
   const handleSignUp = () => {
+    const isEmptyFields = Object.values(registerForm).some(val => val == "");
+    if (isEmptyFields) {
+      Alert.alert(
+        "Registration Error",
+        "All fields are Required",
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+        ]
+      );
+      return;
+    }
+    const passwordMisMatch = registerForm.password !== registerForm.confirmPassword;
+    if (passwordMisMatch) {
+      Alert.alert(
+        "Registration Error",
+        "Password and confirm password do not match",
+        [
+          {
+            text: "Ok",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel"
+          },
+        ]
+      );
+      return;
+    }
     auth
-      .createUserWithEmailAndPassword(email, password)
+      .createUserWithEmailAndPassword(registerForm.email, registerForm.password)
       .then(userCredentials => {
         const user = userCredentials.user;
         console.log('Signed up with:', user.email);
-        const reference = database.ref();
         console.log("user : ", auth.currentUser.uid);
+        console.log("firstName :", registerForm.firstName);
+        console.log("lastName :", registerForm.lastName);
+        console.log("email :", registerForm.email);
         database.ref('users/' + auth.currentUser.uid).set({
-            email: email,
-            unlocked_buildings: ["erie"]
-          });
+          firstName: registerForm.firstName,
+          lastName: registerForm.lastName,
+          email: registerForm.email,
+          score: registerForm.score,
+          unlocked_buildings: ["erie"],
+          pathway1timer: {
+            hotspot0: 0,
+            hotspot1: 0,
+            hotspot2: 0,
+            pathwaystart: 0,
+            pathwayend: 0,
+            totaltime: 0
+          }
+        });
+        setRegisterForm({
+          firstName: "",
+          lastName: "",
+          email: "",
+          password: "",
+          confirmPassword: ""
+        });
 
       })
-      .catch(error => alert(error.message))
+      .catch(error => {
+        alert(error.message)
+        console.log(error.message)
+      })
   }
 
+  const handleChange = (name, value) => {
+    setRegisterForm({ ...registerForm, [name]: value });
+  };
   return (
     <KeyboardAvoidingView
       style={styles.container}
@@ -60,16 +124,35 @@ const RegisterScreen = () => {
     >
       <View style={styles.inputContainer}>
         <TextInput
+          placeholder="First Name"
+          value={registerForm.firstName}
+          onChangeText={value => handleChange('firstName', value)}
+          style={styles.input}
+        />
+        <TextInput
+          placeholder="Last Name"
+          value={registerForm.lastName}
+          onChangeText={value => handleChange('lastName', value)}
+          style={styles.input}
+        />
+        <TextInput
           placeholder="Email"
-          value={email}
-          onChangeText={text => setEmail(text)}
+          value={registerForm.email}
+          onChangeText={value => handleChange('email', value)}
           style={styles.input}
         />
 
         <TextInput
           placeholder="Password"
-          value={password}
-          onChangeText={text => setPassword(text)}
+          value={registerForm.password}
+          onChangeText={value => handleChange('password', value)}
+          style={styles.input}
+          secureTextEntry
+        />
+        <TextInput
+          placeholder="Confirm password"
+          value={registerForm.confirmPassword}
+          onChangeText={text => handleChange('confirmPassword', text)}
           style={styles.input}
           secureTextEntry
         />
