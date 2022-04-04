@@ -47,7 +47,7 @@ const RegisterScreen = () => {
         database.ref('users/' + auth.currentUser.uid).set({
             email: email,
             unlocked_buildings: [],
-            score: 100
+            score: 500
           });
 
       })

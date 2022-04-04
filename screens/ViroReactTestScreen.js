@@ -184,6 +184,15 @@ export default class ViroReactTestScreen extends React.Component {
   gotToMiniGame = (hotspotData) => {
     console.log("going to mini game")
     this.props.navigation.navigate('MiniGameOne', { dataFromAR: hotspotData })
+    // if (hotspotData.title == 'Erie Hall') {
+    //   this.props.navigation.navigate('MiniGameOne', { dataFromAR: hotspotData })
+    // }
+    // else if (hotspotData.title == 'Lambton Tower') {
+    //   this.props.navigation.navigate('MiniGameOne', { dataFromAR: hotspotData })
+    // }
+    // else if (hotspotData.title == 'Essex Hall') {
+    //   this.props.navigation.navigate('MiniGameOne', { dataFromAR: hotspotData })
+    // }
   }
 
 }
