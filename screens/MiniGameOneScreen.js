@@ -58,9 +58,9 @@ const App = (props) => {
           </Text>
           <Text style={{ fontWeight: 'bold', color: 'yellow', fontSize: 30, textAlign: 'center' }}>
             {'\n'}
-            {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Lambton Tower Unlocked!!' :
-              props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Essex Hall Unlocked!!' :
-                props.route.params.dataFromAR.imageUrl == 'essex' ? 'Pathway Completed!!' : ''}
+            {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Erie Hall Unlocked!!' :
+              props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Lambton Tower Unlocked!!' :
+                props.route.params.dataFromAR.imageUrl == 'essex' ? 'Essex Hall Unlocked' : ''}
             {/* New building unlocked!!! */}
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
@@ -113,11 +113,16 @@ const App = (props) => {
 function addUnlockedBuildingToDB(data) {
   console.log("add unlock building", data.imageUrl)
   if (data.imageUrl == 'erie') {
-    addUnlockedBuilding(1, "lambton").then((snapshot) => {
+    addUnlockedBuilding(0, "erie").then((snapshot) => {
       console.log("snapshot : ", snapshot)
     })
   }
   else if (data.imageUrl == 'lambton') {
+    addUnlockedBuilding(1, "lambton").then((snapshot) => {
+      console.log("snapshot : ", snapshot)
+    })
+  }
+  else if (data.imageUrl == 'essex') {
     addUnlockedBuilding(2, "essex").then((snapshot) => {
       console.log("snapshot : ", snapshot)
     })

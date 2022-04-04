@@ -46,7 +46,8 @@ const RegisterScreen = () => {
         console.log("user : ", auth.currentUser.uid);
         database.ref('users/' + auth.currentUser.uid).set({
             email: email,
-            unlocked_buildings: ["erie"]
+            unlocked_buildings: [],
+            score: 100
           });
 
       })

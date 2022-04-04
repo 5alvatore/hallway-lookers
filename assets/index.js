@@ -23,6 +23,11 @@ const images = {
         Essex_Hall_building: require('./Pathway_Images/Essex_Hall_building.jpeg'),
         Erie_Hall_building: require('./Pathway_Images/Erie_Hall_building.jpeg'),
     },
+    indexs:{
+        0: "erie",
+        1: "lambton",
+        2: "essex"
+    }
 };
 
 export default images;
