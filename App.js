@@ -29,6 +29,8 @@ import RankingScreen from "./screens/RankingScreen";
 import SignOutScreen from "./screens/SignOutScreen";
 import PathwayDetailsOneScreen from "./screens/Pathways/PathwayDetailsOneScreen";
 import PathwayDetailsTwoScreen from "./screens/Pathways/PathwayDetailsTwoScreen";
+import Music from "./screens/Music";
+import {playSound, soundOff} from './screens/Music';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -112,6 +114,7 @@ function DrawerRoutes() {
         component={PathwayDetailsTwoScreen}
       />
       {/* <Drawer.Screen name="Signout" component={SignOutScreen} /> */}
+      <Drawer.Screen name="Music Settings"  component={Music} initialParams = {{"music": 'on'}}  listeners = {{playSound}}/>
     </Drawer.Navigator>
   );
 }
