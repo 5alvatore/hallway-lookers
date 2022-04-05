@@ -283,9 +283,9 @@ const App = (props) => {
           </Text>
           <Text style={{ fontWeight: 'bold', color: 'yellow', fontSize: 30, textAlign: 'center' }}>
             {'\n'}
-            {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Lambton Tower Unlocked!!' :
-              props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Essex Hall Unlocked!!' :
-                props.route.params.dataFromAR.imageUrl == 'essex' ? 'Pathway Completed!!' : ''}
+            {props.route.params.dataFromAR.imageUrl == 'erie' ? 'Erie Hall Unlocked!!' :
+              props.route.params.dataFromAR.imageUrl == 'lambton' ? 'Lambton Tower Unlocked!!' :
+                props.route.params.dataFromAR.imageUrl == 'essex' ? 'Essex Hall Unlocked!!' : ''}
 
             {/* function to store time taken for current hotspot */}
             {storeTimeForHotspot()}
@@ -326,7 +326,7 @@ const App = (props) => {
             Flappy Birds
           </Text>
           <Text style={{ fontWeight: 'bold', color: 'red', justifyContent: 'center', alignItems: 'center', fontSize: 40 }}>
-            Reach 5 points to Win
+            Reach 3 points to Win
           </Text>
           <TouchableOpacity style={{ backgroundColor: 'black', paddingHorizontal: 30, paddingVertical: 10 }}
             onPress={() => {
@@ -348,11 +348,20 @@ const App = (props) => {
 function addUnlockedBuildingToDB(data) {
   console.log("add unlock building", data.imageUrl)
   if (data.imageUrl == 'erie') {
+    addUnlockedBuilding(0, "erie").then((snapshot) => {
+      console.log("snapshot : ", snapshot)
+    })
+  }
+  else if (data.imageUrl == 'lambton') {
     addUnlockedBuilding(1, "lambton").then((snapshot) => {
       console.log("snapshot : ", snapshot)
     })
   }
-  //continue from here....add unlocked building in db
+  else if (data.imageUrl == 'essex') {
+    addUnlockedBuilding(2, "essex").then((snapshot) => {
+      console.log("snapshot : ", snapshot)
+    })
+  }
 }
 
 export default App

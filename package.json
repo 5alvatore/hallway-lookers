@@ -9,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@babel/preset-typescript": "^7.16.7",
     "@react-native-async-storage/async-storage": "^1.16.1",
     "@react-native-firebase/app": "^14.5.1",
     "@react-native-firebase/database": "^14.5.1",
@@ -17,6 +18,7 @@
     "@react-navigation/native-stack": "^6.5.0",
     "@viro-community/react-viro": "^2.23.0",
     "expo": "~44.0.2",
+    "expo-blur": "~11.0.0",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
     "expo-updates": "~0.11.6",
@@ -25,6 +27,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-native": "0.65.1",
+    "react-native-elements": "^3.4.2",
     "react-native-game-engine": "^1.2.0",
     "react-native-gesture-handler": "~2.1.0",
     "react-native-leaderboard": "^1.0.6",
@@ -33,6 +36,7 @@
     "react-native-screens": "~3.10.1",
     "react-native-timeline-flatlist": "^0.8.0",
     "react-native-timeline-listview": "^0.2.3",
+    "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.1",
     "react-navigation": "^4.4.4",
     "util": "^0.12.4",

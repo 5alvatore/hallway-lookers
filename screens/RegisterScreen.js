@@ -11,7 +11,7 @@ const RegisterScreen = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      score: 100
+      score: 300
     }
   )
 
@@ -89,7 +89,7 @@ const RegisterScreen = () => {
           lastName: registerForm.lastName,
           email: registerForm.email,
           score: registerForm.score,
-          unlocked_buildings: ["erie"],
+          unlocked_buildings: [],
           pathway1timer: {
             hotspot0: 0,
             hotspot1: 0,
