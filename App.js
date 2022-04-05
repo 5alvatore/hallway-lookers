@@ -31,6 +31,7 @@ import PathwayDetailsOneScreen from "./screens/Pathways/PathwayDetailsOneScreen"
 import PathwayDetailsTwoScreen from "./screens/Pathways/PathwayDetailsTwoScreen";
 import Music from "./screens/Music";
 import {playSound, soundOff} from './screens/Music';
+import BuildingDetailScreen from "./screens/BuildingDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -153,6 +154,7 @@ export default function App() {
         <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
         <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
         <Stack.Screen name="Rankings" component={RankingScreen} />
+        <Stack.Screen name="BuildingDetail" component={BuildingDetailScreen}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

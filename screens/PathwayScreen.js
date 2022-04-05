@@ -1,42 +1,118 @@
+import { useNavigation } from '@react-navigation/core';
 import React from 'react'
-import { StyleSheet, Text, View, Dimensions, Image } from 'react-native';
-import { getUserInfo, getUnlockedBuildingData } from '../services/getDataFromFirebase';
+import { auth } from '../firebase';
+import { StyleSheet, Text, View, FlatList, TouchableOpacity, Dimensions, Image } from 'react-native';
+import image1 from "../assets/timeline/buildings/lambtontower.jpg";
+import image2 from "../assets/timeline/buildings/essexhall.jpg";
+import image3 from "../assets/timeline/buildings/eriehall.jpg";
+import image4 from "../assets/locked2.jpg";
+import { database } from '../firebase';
 
-var user = null;
-var unlocked_buildings = []
+const PathwayScreen = () => {
 
-const imagePaths = {
-  locked_level: require('../assets/locked.png'),
-  essex: require('../assets/timeline/buildings/essexhall.jpg'),
-  lambton: require('../assets/timeline/buildings/lambtontower.jpg'),
-  erie: require('../assets/timeline/buildings/eriehall.jpg'),
+  const navigation = useNavigation()
+
+  // const handleSignOut = () => {
+  //   auth
+  //     .signOut()
+  //     .then(() => {
+  //       navigation.replace("Login")
+  //     })
+  //     .catch(error => alert(error.message))
+  // }
+
+  const tileDimensions = calcTileDimensions(width, 2.01)
+  const goToDemoScreen = () => {
+    navigation.replace("ViroReactTest");
+  }
+
+  // const goToMiniGameScreen = () => {
+  //   navigation.replace("MiniGameOne");
+  // }
+
+
+  function PathwayPage() {
+    return (
+      <View style={styles.container}>
+        {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+        {/* <TouchableOpacity
+          onPress={handleSignOut}
+          style={[styles.button, styles.buttonOutline]}
+        >
+          <Text style={styles.buttonOutlineText}>Sign out</Text>
+        </TouchableOpacity> */}
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.container}>
+      {data.map(i => Item({ ...tileDimensions, imageObj: i }))}
+
+      {/* <TouchableOpacity
+        onPress={goToDemoScreen}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>AR Demo</Text>
+      </TouchableOpacity> */}
+
+      {/* <TouchableOpacity
+        onPress={goToMiniGameScreen}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Mini Game</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={handleSignOut}
+        style={[styles.button, styles.buttonOutline]}
+      >
+        <Text style={styles.buttonOutlineText}>Sign out</Text>
+      </TouchableOpacity> */}
+
+    </View>
+  );
 }
 
 const { width } = Dimensions.get("window");
 
+var data = [
+  { id: 1, title: "Lambton Tower", image: image1, description: "This is lambton tower of university of windsor and it belongs to school of computer science and is the tallest building in the university campus", lat: 42.3054223, lng: -83.0653745, label:"Lambton Tower" },
+  { id: 2, title: "Essex Hall", image: image2, description: "This is Essex hall of University of Windsor and it has many classes. The classes of course Master's in applied Computing are held here in this building",  lat: 42.305059770649, lng: -83.06676376513025, label:"Essex Hall" },
+  { id: 3, title: "Erie Hall", image: image3, description: "This is Erie hall of University of Windsor and is situated right next to the lambton tower",  lat: 42.3051877, lng: -83.06529876703638, label:"Erie Hall" },
+  { id: 4, title: "Locked Level", image: image4 },
+]
 
-const Item = ({ size, margin, imageObj }) => (
-  imageObj.title != 'Locked Level'
+const Item = ({ size, margin, imageObj }) => {
+
+  const navigation = useNavigation()
+  const goToDetailScreen = (params) => {
+    navigation.navigate("BuildingDetail", {imageObj : params});
+  }
+
+  return imageObj.title != 'Locked Level'
     ?
-    <View
+    <TouchableOpacity
       style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
-      key={imageObj.id}>
+      key={imageObj.id}
+      onPress={()=>goToDetailScreen(imageObj)}>
       <Image
-        source={imagePaths[imageObj.image]}
+        source={imageObj.image}
         style={{ width: 150, height: 150, position: "absolute", opacity: 0.3, backgroundColor: "white" }}
       ></Image>
       <Text style={styles.imageTitle}> {imageObj.title}</Text>
-    </View>
+    </TouchableOpacity>
     :
     <View
       style={[styles.item, { width: size, height: size, marginHorizontal: margin }]}
       key={imageObj.id}>
-      <Image source={imagePaths[imageObj.image]}
+      <Image source={imageObj.image}
         style={{ width: 130, height: 130, position: "absolute" }}
       ></Image>
       <Text></Text>
     </View>
-)
+
+}
 
 const calcTileDimensions = (deviceWidth, tpr) => {
   const margin = deviceWidth / (tpr * 10);
@@ -44,63 +120,7 @@ const calcTileDimensions = (deviceWidth, tpr) => {
   return { size, margin };
 };
 
-export default class PathwayScreen extends React.Component {
-
-  constructor() {
-    super();
-    this.state = {
-      unlocked_buildings: []
-    };
-  }
-
-  componentDidMount() {
-    user = getUserInfo();
-    // console.log("user : ", user)
-    if (user) {
-      getUnlockedBuildingData(user).then((snapshot) => {
-        if (snapshot.exists()) {
-          unlocked_buildings = []
-          if (snapshot.val().unlocked_buildings != undefined &&
-            snapshot.val().unlocked_buildings.length > 0) {
-            for (let i = 0; i < snapshot.val().unlocked_buildings.length; i++) {
-              let title_string_array = ((snapshot.val().unlocked_buildings[i]).split("_"))
-              title_string_array.pop()
-              let title = title_string_array.join(" ")
-              unlocked_buildings.push({ id: i + 1, title: snapshot.val().unlocked_buildings[i], image: snapshot.val().unlocked_buildings[i] })
-            }
-          }
-          else {
-            unlocked_buildings = []
-          }
-
-          for (let i = unlocked_buildings.length; i < 4; i++) {
-            unlocked_buildings.push({ id: i + 1, title: 'Locked Level', image: 'locked_level' })
-          }
-          // console.log(unlocked_buildings)
-          this.setState({ unlocked_buildings: unlocked_buildings })
-
-        } else {
-          console.log("No data available");
-        }
-      })
-      .catch((error) => console.log(error))
-
-    }
-  }
-
-  render() {
-    const { unlocked_buildings } = this.state;
-    // console.log(unlocked_buildings);
-
-    const tileDimensions = calcTileDimensions(width, 2.01);
-
-    return (
-      <View style={styles.container}>
-        {unlocked_buildings.map(i => Item({ ...tileDimensions, imageObj: i }))}
-      </View>
-    )
-  }
-}
+export default PathwayScreen
 
 const styles = StyleSheet.create({
   container: {
