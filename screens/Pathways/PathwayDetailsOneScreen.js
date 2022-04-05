@@ -38,7 +38,8 @@ export default class PathwayDetailsOneScreen extends Component {
 
         this.state = {
             selected: null, hotspots: this.hotspots, current_building: '',
-            unlocked_buildings: [], isVisible: false, hint1: '', hint2: '', hint3: ''
+            unlocked_buildings: [], isVisible: false, hint1: '', hint2: '', hint3: '',
+            isTimeSaved: false
         };
     }
 
@@ -60,6 +61,34 @@ export default class PathwayDetailsOneScreen extends Component {
         // return <Text style={{ marginTop: 10 }}>Selected hotspot: {this.state.selected.title} at {this.state.selected.time}</Text>
     }
 
+    // function to save the current time and store it in firebase
+    getCurrentTime() {
+        // if already time saved in firebase, don't save
+        console.log("is time saved??", this.state.isTimeSaved)
+
+        if (!this.state.isTimeSaved) {
+            const currentTime = Date.now()
+            console.log("Pathway1 start time is ", currentTime)
+
+            user = auth.currentUser;
+            //console.log("user is", user)
+            const reference = database.ref();
+            if (user) {
+                reference.child("users").child(user.uid).child("pathway1timer").get().then((snapshot) => {
+                    if (snapshot.exists()) {
+                        // update the pathway1 timer
+                        console.log("total time taken for pathway 1", snapshot.val().totaltime)
+                        reference.child("users").child(user.uid).child("pathway1timer").update({
+                            pathwaystart: currentTime
+                        })
+                        this.setState({ isTimeSaved: true })
+                    }
+
+                })
+            }
+        }
+    }
+
     renderDetail(rowData, sectionID, rowID) {
         let title = <Text style={[styles.title]}>{rowData.hotspot}</Text>
         var desc = null
@@ -70,6 +99,8 @@ export default class PathwayDetailsOneScreen extends Component {
                         (this.state.current_building == rowData.imageUrl || this.state.unlocked_buildings.indexOf(rowData.imageUrl) > -1) ?
                             <TouchableOpacity
                                 onPress={() => {
+                                    // store the pathway 1 start time in firebase to later calculate the difference
+                                    this.getCurrentTime();
                                     this.state.current_building == rowData.imageUrl ?
                                         this.props.navigation.navigate('ViroReactTest', { datafromPathway: rowData }) :
                                         this.displayAlert()
