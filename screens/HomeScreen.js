@@ -25,57 +25,6 @@ const imagePaths = {
 
 const { width } = Dimensions.get("window");
 
-const Item = ({ size, margin, imageObj }) =>
-  imageObj.title != "Locked Level" ? (
-    <TouchableOpacity
-      onPress={() =>
-        this.props.navigation.navigate("buildingdetailscreen", {
-          datafromPathway: imageObj.image,
-        })
-      }
-      key={imageObj.id + imageObj.image + "01"}
-    >
-      <View
-        style={[
-          styles.item,
-          { width: size, height: size, marginHorizontal: margin },
-        ]}
-        key={imageObj.id}
-      >
-        <Image
-          source={imagePaths[imageObj.image]}
-          style={{
-            width: 100,
-            height: 100,
-            position: "absolute",
-            opacity: 0.3,
-            backgroundColor: "white",
-          }}
-        ></Image>
-        <Text style={styles.imageTitle}> {imageObj.title}</Text>
-      </View>
-    </TouchableOpacity>
-  ) : (
-    <View
-      style={[
-        styles.item,
-        { width: size, height: size, marginHorizontal: margin },
-      ]}
-      key={imageObj.id}
-    >
-      <Image
-        source={imagePaths[imageObj.image]}
-        style={{ width: 80, height: 80, position: "absolute" }}
-      ></Image>
-      <Text></Text>
-    </View>
-  );
-
-const calcTileDimensions = (deviceWidth, tpr) => {
-  const margin = deviceWidth / (tpr * 10);
-  const size = (deviceWidth - margin * (tpr * 2)) / tpr;
-  return { size, margin };
-};
 
 export default class HomeScreen extends React.Component {
   constructor() {
@@ -84,6 +33,63 @@ export default class HomeScreen extends React.Component {
       unlocked_buildings: [],
     };
   }
+
+  goToDetailScreen = (params) => {
+    console.log("params : ", params)
+    this.props.navigation.navigate("BuildingDetail", { imageObj: params });
+  }
+
+  Item({ size, margin, imageObj }) {
+    return (
+      imageObj.title != "Locked Level" ? (
+        <TouchableOpacity
+          onPress={() => this.goToDetailScreen(imageObj)}
+          key={imageObj.id + imageObj.image + "01"}
+        >
+          <View
+            style={[
+              styles.item,
+              { width: size, height: size, marginHorizontal: margin },
+            ]}
+            key={imageObj.id}
+          >
+            <Image
+              source={imagePaths[imageObj.image]}
+              style={{
+                width: 100,
+                height: 100,
+                position: "absolute",
+                opacity: 0.3,
+                backgroundColor: "white",
+              }}
+            ></Image>
+            <Text style={styles.imageTitle}> {imageObj.title}</Text>
+          </View>
+        </TouchableOpacity>
+      ) : (
+        <View
+          style={[
+            styles.item,
+            { width: size, height: size, marginHorizontal: margin },
+          ]}
+          key={imageObj.id}
+        >
+          <Image
+            source={imagePaths[imageObj.image]}
+            style={{ width: 80, height: 80, position: "absolute" }}
+          ></Image>
+          <Text></Text>
+        </View>
+      )
+    )
+  }
+
+
+  calcTileDimensions(deviceWidth, tpr) {
+    const margin = deviceWidth / (tpr * 10);
+    const size = (deviceWidth - margin * (tpr * 2)) / tpr;
+    return { size, margin };
+  };
 
   componentDidMount() {
     user = getUserInfo();
@@ -140,15 +146,15 @@ export default class HomeScreen extends React.Component {
     const { unlocked_buildings } = this.state;
     // console.log(unlocked_buildings);
 
-    const tileDimensions = calcTileDimensions(width, 3);
+    const tileDimensions = this.calcTileDimensions(width, 3);
 
     return (
       <View style={styles.container}>
         {unlocked_buildings.map((i) =>
-          Item({ ...tileDimensions, imageObj: i })
+          this.Item({ ...tileDimensions, imageObj: i })
         )}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           // onPress={goToMiniGameScreen}
           onPress={() => this.props.navigation.navigate("MiniGameTwo")}
           style={[styles.button, styles.buttonOutline]}
@@ -169,7 +175,7 @@ export default class HomeScreen extends React.Component {
           style={[styles.button, styles.buttonOutline]}
         >
           <Text style={styles.buttonOutlineText}>Sign out</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }

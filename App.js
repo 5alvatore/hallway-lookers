@@ -9,7 +9,7 @@ import {
   DrawerContentScrollView,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import { auth } from "./firebase";
+import { auth, database } from "./firebase";
 import {
   getUserInfo,
   getUnlockedBuildingData,
@@ -30,7 +30,8 @@ import SignOutScreen from "./screens/SignOutScreen";
 import PathwayDetailsOneScreen from "./screens/Pathways/PathwayDetailsOneScreen";
 import PathwayDetailsTwoScreen from "./screens/Pathways/PathwayDetailsTwoScreen";
 import Music from "./screens/Music";
-import {playSound, soundOff} from './screens/Music';
+import { playSound, soundOff } from './screens/Music';
+import BuildingDetailScreen from "./screens/BuildingDetailScreen";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,123 +41,158 @@ var name = [];
 var user = getUserInfo();
 var title;
 
-if (user) {
-  getUnlockedBuildingData(user).then((snapshot) => {
-    if (snapshot.exists()) {
-      name = [];
-      if (snapshot.val().name != undefined && snapshot.val().name.length > 0) {
-        let title_string_array = snapshot.val().name.split(" ");
-        title = title_string_array[0];
-        console.log(title);
-      } else {
-        name = [];
-      }
-      // snapshot.val();
-    } else {
-      console.log("No data available");
-    }
-  });
-}
-
-function DrawerRoutes() {
-  return (
-    <Drawer.Navigator
-      drawerContent={(props) => {
-        return (
-          <DrawerContentScrollView {...props}>
-            <View style={styles.userInfoSection}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  marginTop: 15,
-                  marginBottom: 10,
-                }}
-              >
-                <Text style={styles.username}>Username:</Text>
-                <Text style={styles.title}>{title}</Text>
-              </View>
-            </View>
-            <DrawerItemList {...props} />
-            <DrawerItem
-              labelStyle={{ color: "#84c9fb" }}
-              label="Signout"
-              onPress={() =>
-                auth
-                  .signOut()
-                  .then(() => {
-                    props.navigation.navigate("Login");
-                  })
-                  .catch((error) => alert(error.message))
-              }
-            />
-          </DrawerContentScrollView>
-        );
-      }}
-      screenOptions={{
-        drawerStyle: {
-          backgroundColor: "#363636",
-          width: 200,
-        },
-        drawerActiveTintColor: "#ffffff",
-        drawerInactiveTintColor: "#84c9fb",
-        headerStyle: { backgroundColor: "#121212" },
-        headerTintColor: "#dee2e6",
-      }}
-    >
-      <Drawer.Screen name="Home" component={HomeScreen} />
-      <Drawer.Screen name="Profile" component={ProfileScreen} />
-      <Drawer.Screen name="Pathways" component={PathwayScreen} />
-      <Drawer.Screen name="ScoreBoard" component={ScoreBoard} />
-      <Drawer.Screen name="Rankings" component={RankingScreen} />
-      <Drawer.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
-      <Drawer.Screen
-        name="General Pathway"
-        component={PathwayDetailsTwoScreen}
-      />
-      {/* <Drawer.Screen name="Signout" component={SignOutScreen} /> */}
-      <Drawer.Screen name="Music Settings"  component={Music} initialParams = {{"music": 'on'}}  listeners = {{playSound}}/>
-    </Drawer.Navigator>
-  );
-}
-
 const navTheme = {
   colors: {
     background: "#121212",
   },
 };
 
-export default function App() {
-  return (
-    <NavigationContainer theme={navTheme}>
-      <Stack.Navigator
-        initialRouteName="Login"
+export default class App extends React.Component {
+  constructor() {
+    super();
+    user = getUserInfo();
+    
+  }
+
+  componentDidMount() {
+    if (user) {
+      const reference = database.ref();
+      reference.child("users").child(user.uid).get().then((snapshot) => {
+        console.log("snapshot : ", snapshot, snapshot.val().firstName)
+        title = snapshot.val().firstName
+        // console.log(title)
+      })
+    }
+  }
+
+  DrawerRoutes() {
+    return (
+      <Drawer.Navigator
+        drawerContent={(props) => {
+          return (
+            <DrawerContentScrollView {...props}>
+              {/* <View style={styles.userInfoSection}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    marginTop: 15,
+                    marginBottom: 10,
+                  }}
+                >
+                  <Text style={styles.username}>Username:</Text>
+                  <Text style={styles.title}>{title}</Text>
+                </View>
+              </View> */}
+              <DrawerItemList {...props} />
+              <DrawerItem
+                labelStyle={{ color: "#84c9fb" }}
+                label="Signout"
+                onPress={() =>
+                  auth
+                    .signOut()
+                    .then(() => {
+                      props.navigation.navigate("Login");
+                    })
+                    .catch((error) => alert(error.message))
+                }
+              />
+            </DrawerContentScrollView>
+          );
+        }}
         screenOptions={{
+          drawerStyle: {
+            backgroundColor: "#363636",
+            width: 200,
+          },
+          drawerActiveTintColor: "#ffffff",
+          drawerInactiveTintColor: "#84c9fb",
           headerStyle: { backgroundColor: "#121212" },
           headerTintColor: "#dee2e6",
         }}
       >
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
-        <Stack.Screen name="Register" component={RegisterScreen} />
-        <Stack.Screen
-          name="Hallway Lookers"
-          component={DrawerRoutes}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
-        <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
-        <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
-        <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
-        <Stack.Screen name="Rankings" component={RankingScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+        <Drawer.Screen name="Home" component={HomeScreen} />
+        {/* <Drawer.Screen name="Profile" component={ProfileScreen} /> */}
+        {/* <Drawer.Screen name="Pathways" component={PathwayScreen} /> */}
+        <Drawer.Screen name="ScoreBoard" component={ScoreBoard} />
+        <Drawer.Screen name="Rankings" component={RankingScreen} />
+        <Drawer.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
+        {/* <Drawer.Screen
+          name="General Pathway"
+          component={PathwayDetailsTwoScreen}
+        /> */}
+        {/* <Drawer.Screen name="Signout" component={SignOutScreen} /> */}
+        <Drawer.Screen name="Music Settings" component={Music} initialParams={{ "music": 'on' }} listeners={{ playSound }} />
+      </Drawer.Navigator>
+    );
+  }
+
+  render() {
+    return (
+      <NavigationContainer theme={navTheme}>
+        <Stack.Navigator
+          initialRouteName="Login"
+          screenOptions={{
+            headerStyle: { backgroundColor: "#121212" },
+            headerTintColor: "#dee2e6",
+          }}
+        >
+          <Stack.Screen
+            name="Login"
+            component={LoginScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen
+            name="Hallway Lookers"
+            component={this.DrawerRoutes}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
+          <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
+          <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
+          <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
+          <Stack.Screen name="Rankings" component={RankingScreen} />
+          <Stack.Screen name="BuildingDetail" component={BuildingDetailScreen}/>
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
 }
+
+// export default function App() {
+//   return (
+//     <NavigationContainer theme={navTheme}>
+//       <Stack.Navigator
+//         initialRouteName="Login"
+//         screenOptions={{
+//           headerStyle: { backgroundColor: "#121212" },
+//           headerTintColor: "#dee2e6",
+//         }}
+//       >
+//         <Stack.Screen
+//           name="Login"
+//           component={LoginScreen}
+//           options={{ headerShown: false }}
+//         />
+//         <Stack.Screen name="ResetPassword" component={ResetPasswordScreen} />
+//         <Stack.Screen name="Register" component={RegisterScreen} />
+//         <Stack.Screen
+//           name="Hallway Lookers"
+//           component={DrawerRoutes}
+//           options={{ headerShown: false }}
+//         />
+//         <Stack.Screen name="Home" component={HomeScreen} />
+//         <Stack.Screen name="ViroReactTest" component={ViroReactTestScreen} />
+//         <Stack.Screen name="MiniGameOne" component={MiniGameOneScreen} />
+//         <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
+//         <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
+//         <Stack.Screen name="Rankings" component={RankingScreen} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// }
 
 const styles = StyleSheet.create({
   container: {
