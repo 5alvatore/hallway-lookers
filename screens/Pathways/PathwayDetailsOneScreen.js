@@ -31,9 +31,9 @@ export default class PathwayDetailsOneScreen extends Component {
         this.renderDetail = this.renderDetail.bind(this);
 
         this.hotspots = [
-            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "erie", "lineColor": "#009688", "time": "#1", "title": "Erie Hall", "hotspot": "Hotspot 1" },
-            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "lambton", "lineColor": "#009688", "time": "#2", "title": "Lambton Tower", "hotspot": "Hotspot 2" },
-            { "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pharetra luctus sapien at pharetra.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "essex", "lineColor": "#009688", "time": "#3", "title": "Essex Hall", "hotspot": "Hotspot 3" },
+            { "description": "This is a building in University of Windsor which is situated right next to the Lambton Tower and CAW Center.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "erie", "lineColor": "#009688", "time": "#1", "title": "Erie Hall", "hotspot": "Hotspot 1" },
+            { "description": "This is main building of the CS Department and is currently the tallest building in the university campus.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "lambton", "lineColor": "#009688", "time": "#2", "title": "Lambton Tower", "hotspot": "Hotspot 2" },
+            { "description": "This is a building in University of Windsor with multiple classrooms and different departments take their classes over here.", "icon": <Image style={{ width: 20, height: 20 }} source={Images.timeline.icons.archery} />, "imageUrl": "essex", "lineColor": "#009688", "time": "#3", "title": "Essex Hall", "hotspot": "Hotspot 3" },
         ]
 
         this.state = {

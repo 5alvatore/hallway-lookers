@@ -10,9 +10,9 @@ const imagePaths = {
 };
 
 var description = {
-    lambton: "This is lambton tower of university of windsor and it belongs to school of computer science and is the tallest building in the university campus",
-    essex: "This is Essex hall of University of Windsor and it has many classes. The classes of course Master's in applied Computing are held here in this building",
-    erie: "This is Erie hall of University of Windsor and is situated right next to the lambton tower"
+    lambton: "This is main building of the CS Department in University of Windsor and is currently the tallest building in the university campus.",
+    essex: "This is a building in University of Windsor with multiple classrooms. Multiple departments take their classes over here.",
+    erie: "This is a building in University of Windsor which is situated right next to the Lambton Tower and CAW Center."
 }
 
 var latitude = {
@@ -57,13 +57,13 @@ const BuildingDetailScreen = ({ route }) => {
                 resizeMode='cover'
                 style={{ width: '100%', height: 250, backgroundColor: "white" }}
             ></Image>
-            <Text style={styles.text}>{imageObj.title}</Text>
+            <Text style={styles.titleText}>{imageObj.image}</Text>
             <Text style={styles.text}>{description[imageObj.image]}</Text>
             <TouchableOpacity
                 style={[styles.button, styles.buttonOutline]}
                 onPress={openGps}
             >
-                <Text style={styles.buttonOutlineText}>Open</Text>
+                <Text style={styles.buttonOutlineText}>Directions</Text>
             </TouchableOpacity>
             {/* <TouchableOpacity
          style={[styles.button, styles.buttonOutline]}
@@ -78,11 +78,20 @@ const BuildingDetailScreen = ({ route }) => {
 export default BuildingDetailScreen
 
 const styles = StyleSheet.create({
+    titleText: {
+        color: '#fff',
+        fontSize: 20,
+        margin: 20,
+        textAlign: 'center',
+        textTransform: 'capitalize',
+        textDecorationStyle: 'solid',
+        textDecorationLine: 'underline'
+    },
     text: {
         color: '#fff',
-        fontSize: 27,
-        margin: 10,
-        textAlign: 'center'
+        fontSize: 20,
+        margin: 20,
+        textAlign: 'center',
     },
     buttonOutlineText: {
         color: 'white',

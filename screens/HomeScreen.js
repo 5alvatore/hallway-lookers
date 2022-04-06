@@ -36,7 +36,7 @@ export default class HomeScreen extends React.Component {
 
   goToDetailScreen = (params) => {
     console.log("params : ", params)
-    this.props.navigation.navigate("BuildingDetail", { imageObj: params });
+    this.props.navigation.navigate("Building Details", { imageObj: params });
   }
 
   Item({ size, margin, imageObj }) {
