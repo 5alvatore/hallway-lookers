@@ -113,7 +113,7 @@ export default class App extends React.Component {
         <Drawer.Screen name="Home" component={HomeScreen} />
         {/* <Drawer.Screen name="Profile" component={ProfileScreen} /> */}
         {/* <Drawer.Screen name="Pathways" component={PathwayScreen} /> */}
-        <Drawer.Screen name="ScoreBoard" component={ScoreBoard} />
+        <Drawer.Screen name="Scoreboard" component={ScoreBoard} />
         <Drawer.Screen name="Rankings" component={RankingScreen} />
         <Drawer.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
         {/* <Drawer.Screen
@@ -154,7 +154,7 @@ export default class App extends React.Component {
           <Stack.Screen name="MiniGameTwo" component={MiniGameTwoScreen} />
           <Stack.Screen name="CS Pathway" component={PathwayDetailsOneScreen} />
           <Stack.Screen name="Rankings" component={RankingScreen} />
-          <Stack.Screen name="BuildingDetail" component={BuildingDetailScreen}/>
+          <Stack.Screen name="Building Details" component={BuildingDetailScreen}/>
         </Stack.Navigator>
       </NavigationContainer>
     );
