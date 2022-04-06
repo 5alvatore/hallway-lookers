@@ -132,7 +132,7 @@ const words = [
 const addUnlockedBuildingToDB = (data) => {
   console.log("add unlock building", data.imageUrl)
   if (data.imageUrl == 'lambton') {
-    addUnlockedBuilding(2, "essex").then((snapshot) => {
+    addUnlockedBuilding(1, "lambton").then((snapshot) => {
       console.log(snapshot);
     })
   }
